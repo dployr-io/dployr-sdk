@@ -16,5 +16,5 @@
   },
   "dependencies": {
     "@microsoft/kiota-bundle": "^1.0.0-preview.99"
-  }
+  } 
 }
