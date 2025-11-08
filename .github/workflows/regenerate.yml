@@ -1,0 +1,82 @@
+name: regenerate
+
+on:
+  repository_dispatch:
+    types: [spec-updated]
+
+jobs:
+  generate-pr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout SDK repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Download latest API spec
+        run: |
+          curl -fsSL "${{ github.event.client_payload.spec_url }}" -o openapi.yaml
+
+      - name: Setup Kiota
+        run: |
+          dotnet tool install --global Microsoft.Kiota --version 1.*
+          echo "${HOME}/.dotnet/tools" >> $GITHUB_PATH
+
+      - name: Generate SDK
+        run: |
+          kiota generate \
+            --language typescript \
+            --openapi openapi.yaml \
+            --output client \
+            --class-name DployrClient \
+            --namespace dployr
+
+      - name: Build SDK
+        run: |
+          npm ci
+          npm run build
+
+      - name: Determine version bump
+        id: bump
+        run: |
+          # Simple heuristic: major bump if "breaking" or "remove" appears in diff
+          if git diff -U0 HEAD -- openapi.yaml | grep -E 'remove|breaking' > /dev/null; then
+            echo "bump=major" >> $GITHUB_OUTPUT
+          else
+            echo "bump=minor" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create SDK update branch
+        run: |
+          branch="auto/sdk-update-${{ github.event.client_payload.commit_sha }}"
+          git checkout -b "$branch"
+          git add -A
+          git commit -m "chore: regenerate SDK from latest spec (${GITHUB_SHA})"
+          git push origin "$branch"
+
+      - name: Create or update PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: "auto/sdk-update-${{ github.event.client_payload.commit_sha }}"
+          base: main
+          title: "SDK Update (${{ steps.bump.outputs.bump }})"
+          body: |
+            - Source commit: `${{ github.event.client_payload.commit_sha }}`
+            - Change type: **${{ steps.bump.outputs.bump }}**
+
+            This pull request was auto-generated with [Kiota](https://learn.microsoft.com/en-us/openapi/kiota) from the latest API spec changes.
+            Please review before merging to ensure compatibility.
+          commit-message: "chore: regenerate SDK (auto)"
+          labels: |
+            auto-generated
+            sdk-update
