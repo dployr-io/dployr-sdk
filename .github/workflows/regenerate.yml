@@ -27,9 +27,7 @@ jobs:
           curl -fsSL "${{ github.event.client_payload.spec_url }}" -o openapi.yaml
 
       - name: Setup Kiota
-        run: |
-          dotnet tool install --global Microsoft.Kiota
-          echo "${HOME}/.dotnet/tools" >> $GITHUB_PATH
+        uses: microsoft/setup-kiota@v0.5.0
 
       - name: Generate SDK
         run: |
