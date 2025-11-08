@@ -6,8 +6,6 @@ on:
       - 'v*'
     branches:
       - main
-    paths:
-      - 'typescript/**'
 
 permissions:
   contents: write
