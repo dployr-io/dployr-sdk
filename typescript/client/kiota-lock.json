@@ -1,8 +1,8 @@
 {
-  "descriptionHash": "1208661498AAA90C05E2F31FF88E24A3D5038B1E3E0AF18F61076C0D0E3C4CB080FD3AFCEAA133A9A183B47E79621156C45B0E6F866CB25103D01408C6B51838",
-  "descriptionLocation": "https://raw.githubusercontent.com/dployr-io/dployr/refs/heads/master/api/openapi.yaml",
+  "descriptionHash": "C9D0108D5B0120497BE1A5DF8928BB7EE6EA220B9273C504410BA1D60077DB2ACDFF124D5E6B1F608738E6839E6F7883D592F76135A3FD659849D6991AC6E088",
+  "descriptionLocation": "../../openapi.yaml",
   "lockFileVersion": "1.0.0",
-  "kiotaVersion": "1.28.0",
+  "kiotaVersion": "1.29.0",
   "clientClassName": "DployrClient",
   "typeAccessModifier": "Public",
   "clientNamespaceName": "ApiSdk",
