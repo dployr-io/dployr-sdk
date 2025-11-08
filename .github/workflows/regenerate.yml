@@ -93,28 +93,3 @@ jobs:
           labels: |
             auto-generated
             sdk-update
-
-  tag-on-merge:
-    needs: generate-pr
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/main')
-    permissions:
-      contents: write
-
-    steps:
-      - name: Checkout SDK repo
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Get current SDK version
-        id: version
-        run: |
-          VERSION=$(jq -r .version typescript/package.json)
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-
-      - name: Create Git tag
-        run: |
-          git tag -a "v${{ steps.version.outputs.version }}" -m "Release ${{ steps.version.outputs.version }}"
-          git push origin "v${{ steps.version.outputs.version }}"
-          
