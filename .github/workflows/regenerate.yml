@@ -39,7 +39,7 @@ jobs:
 
       - name: Build SDK
         run: |
-          npm ci
+          npm install
           npm run build
 
       - name: Determine version bump
