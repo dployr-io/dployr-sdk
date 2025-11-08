@@ -57,6 +57,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.SYNC_TOKEN }}
         run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
           branch="auto/sdk-update-${{ github.event.client_payload.commit_sha }}"
           git checkout -b "$branch"
           git add -A
