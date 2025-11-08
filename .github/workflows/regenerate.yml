@@ -46,26 +46,28 @@ jobs:
       - name: Determine version bump
         id: bump
         run: |
-          # Simple heuristic: major bump if "breaking" or "remove" appears in diff
           if git diff -U0 HEAD -- openapi.yaml | grep -E 'remove|breaking' > /dev/null; then
             echo "bump=major" >> $GITHUB_OUTPUT
           else
             echo "bump=minor" >> $GITHUB_OUTPUT
           fi
 
-      - name: Create SDK update branch
-        env:
-          GITHUB_TOKEN: ${{ secrets.SYNC_TOKEN }}
+      - name: Commit SDK changes
+        id: commit
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          branch="auto/sdk-update-${{ github.event.client_payload.commit_sha }}"
-          git checkout -b "$branch"
+
           git add -A
-          git commit -m "chore: regenerate SDK from latest spec (${GITHUB_SHA})"
-          git push origin "$branch"
+          if git diff --cached --quiet; then
+            echo "no_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "no_changes=false" >> $GITHUB_OUTPUT
+            git commit -m "chore: regenerate SDK from latest spec (${{ github.event.client_payload.commit_sha }})"
+          fi
 
       - name: Create or update PR
+        if: steps.commit.outputs.no_changes == 'false'
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.SYNC_TOKEN }}
@@ -76,8 +78,9 @@ jobs:
             - Source commit: `${{ github.event.client_payload.commit_sha }}`
             - Change type: **${{ steps.bump.outputs.bump }}**
 
-            This pull request was auto-generated with [Kiota](https://learn.microsoft.com/en-us/openapi/kiota) from the latest API spec changes.
-            Please review before merging to ensure compatibility.
+            This pull request was auto-generated with [Kiota](https://learn.microsoft.com/en-us/openapi/kiota)
+            from the latest API spec changes.
+            Please review before merging.
           commit-message: "chore: regenerate SDK (auto)"
           labels: |
             auto-generated
