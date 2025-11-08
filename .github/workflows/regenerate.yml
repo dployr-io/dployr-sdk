@@ -54,6 +54,8 @@ jobs:
           fi
 
       - name: Create SDK update branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.SYNC_TOKEN }}
         run: |
           branch="auto/sdk-update-${{ github.event.client_payload.commit_sha }}"
           git checkout -b "$branch"
@@ -64,7 +66,7 @@ jobs:
       - name: Create or update PR
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.SYNC_TOKEN }}
           branch: "auto/sdk-update-${{ github.event.client_payload.commit_sha }}"
           base: main
           title: "SDK Update (${{ steps.bump.outputs.bump }})"
