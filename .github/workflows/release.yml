@@ -6,8 +6,6 @@ on:
       - 'v*'
     branches:
       - main
-    paths:
-      - 'typescript/**'
 
 permissions:
   contents: write
@@ -21,6 +19,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.SYNC_TOKEN }}
 
       - name: Get version from package.json
         id: package-version
