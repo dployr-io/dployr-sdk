@@ -11,7 +11,7 @@ import { type BaseRequestBuilder, type Parsable, type ParsableFactory, type Requ
  */
 export interface StreamRequestBuilder extends BaseRequestBuilder<StreamRequestBuilder> {
     /**
-     * Open a keep alive connection to stream logs via server sent events (SSE) (Developer+ required).The stream sends events in SSE format:- `data:` events contain log lines- `event: error` indicates streaming errors- `event: done` indicates stream completion- `: heartbeat` comments are sent every 15 seconds to keep the connection alive
+     * Open a keep alive connection to stream logs via server sent events (SSE) (Developer+ required).- `data:` events contain log lines- `event: error` indicates streaming errors- `event: done` indicates stream completion- `: heartbeat` comments are sent every 15 seconds to keep the connection alive
      * @param requestConfiguration Configuration for the request such as headers, query parameters, and middleware options.
      * @returns {Promise<ArrayBuffer>}
      * @throws {ErrorEscaped} error when the service returns a 400 status code
@@ -22,14 +22,14 @@ export interface StreamRequestBuilder extends BaseRequestBuilder<StreamRequestBu
      */
      get(requestConfiguration?: RequestConfiguration<StreamRequestBuilderGetQueryParameters> | undefined) : Promise<ArrayBuffer | undefined>;
     /**
-     * Open a keep alive connection to stream logs via server sent events (SSE) (Developer+ required).The stream sends events in SSE format:- `data:` events contain log lines- `event: error` indicates streaming errors- `event: done` indicates stream completion- `: heartbeat` comments are sent every 15 seconds to keep the connection alive
+     * Open a keep alive connection to stream logs via server sent events (SSE) (Developer+ required).- `data:` events contain log lines- `event: error` indicates streaming errors- `event: done` indicates stream completion- `: heartbeat` comments are sent every 15 seconds to keep the connection alive
      * @param requestConfiguration Configuration for the request such as headers, query parameters, and middleware options.
      * @returns {RequestInformation}
      */
      toGetRequestInformation(requestConfiguration?: RequestConfiguration<StreamRequestBuilderGetQueryParameters> | undefined) : RequestInformation;
 }
 /**
- * Open a keep alive connection to stream logs via server sent events (SSE) (Developer+ required).The stream sends events in SSE format:- `data:` events contain log lines- `event: error` indicates streaming errors- `event: done` indicates stream completion- `: heartbeat` comments are sent every 15 seconds to keep the connection alive
+ * Open a keep alive connection to stream logs via server sent events (SSE) (Developer+ required).- `data:` events contain log lines- `event: error` indicates streaming errors- `event: done` indicates stream completion- `: heartbeat` comments are sent every 15 seconds to keep the connection alive
  */
 export interface StreamRequestBuilderGetQueryParameters {
     /**

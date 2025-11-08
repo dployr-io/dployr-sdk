@@ -6,4 +6,3 @@ Warning: KiotaBuilder OpenAPI warning: #/components/schemas/TokenClaims/properti
 Warning: KiotaBuilder OpenAPI warning: #/components/schemas/RemoteObj/properties/url - The format uri is not supported by Kiota and the string type will be used.
 Warning: KiotaBuilder OpenAPI warning: #/components/schemas/Deployment/properties/user_email - The format email is not supported by Kiota and the string type will be used.
 Warning: KiotaBuilder OpenAPI warning: #/components/schemas/Service/properties/remote - The format uri is not supported by Kiota and the string type will be used.
-Warning: KiotaBuilder API client was generated with version 1.28.0 and the current version is 1.29.0, it will be upgraded and you should upgrade dependencies
