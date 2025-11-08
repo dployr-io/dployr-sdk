@@ -32,11 +32,10 @@ jobs:
       - name: Generate SDK
         run: |
           kiota generate \
-            --language typescript \
-            --openapi openapi.yaml \
-            --output client \
-            --class-name DployrClient \
-            --namespace dployr
+            -l typescript \
+            -d openapi.yaml \
+            -o ./client \
+            --class-name DployrClient
 
       - name: Build SDK
         run: |
