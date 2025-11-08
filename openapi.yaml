@@ -524,9 +524,9 @@ paths:
                 type: string
                 description: Server-Sent Events stream with log data
                 example: |
-                  data: Log line 1
+                  data: cloning repository
                   
-                  data: Log line 2
+                  data: installing nodejs@18.1.0
                   
                   : heartbeat
                   
