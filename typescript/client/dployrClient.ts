@@ -53,7 +53,7 @@ export function createDployrClient(requestAdapter: RequestAdapter) {
     }
     
     if (requestAdapter.baseUrl === undefined || requestAdapter.baseUrl === null || requestAdapter.baseUrl === "") {
-        requestAdapter.baseUrl = "https://raw.githubusercontent.com/dployr-io/dployr/refs/heads/master/api/{address}";
+        requestAdapter.baseUrl = "{address}";
     }
     const pathParameters: Record<string, unknown> = {
         "baseurl": requestAdapter.baseUrl,

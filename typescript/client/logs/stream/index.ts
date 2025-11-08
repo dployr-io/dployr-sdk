@@ -11,62 +11,56 @@ import { type BaseRequestBuilder, type Parsable, type ParsableFactory, type Requ
  */
 export interface StreamRequestBuilder extends BaseRequestBuilder<StreamRequestBuilder> {
     /**
-     * Open a WebSocket connection to stream logs in real-time (Developer+ required).This endpoint upgrades the HTTP connection to WebSocket.
+     * Open a keep alive connection to stream logs via server sent events (SSE) (Developer+ required).The stream sends events in SSE format:- `data:` events contain log lines- `event: error` indicates streaming errors- `event: done` indicates stream completion- `: heartbeat` comments are sent every 15 seconds to keep the connection alive
      * @param requestConfiguration Configuration for the request such as headers, query parameters, and middleware options.
      * @returns {Promise<ArrayBuffer>}
      * @throws {ErrorEscaped} error when the service returns a 400 status code
      * @throws {ErrorEscaped} error when the service returns a 401 status code
      * @throws {ErrorEscaped} error when the service returns a 403 status code
+     * @throws {ErrorEscaped} error when the service returns a 405 status code
      * @throws {ErrorEscaped} error when the service returns a 500 status code
      */
      get(requestConfiguration?: RequestConfiguration<StreamRequestBuilderGetQueryParameters> | undefined) : Promise<ArrayBuffer | undefined>;
     /**
-     * Open a WebSocket connection to stream logs in real-time (Developer+ required).This endpoint upgrades the HTTP connection to WebSocket.
+     * Open a keep alive connection to stream logs via server sent events (SSE) (Developer+ required).The stream sends events in SSE format:- `data:` events contain log lines- `event: error` indicates streaming errors- `event: done` indicates stream completion- `: heartbeat` comments are sent every 15 seconds to keep the connection alive
      * @param requestConfiguration Configuration for the request such as headers, query parameters, and middleware options.
      * @returns {RequestInformation}
      */
      toGetRequestInformation(requestConfiguration?: RequestConfiguration<StreamRequestBuilderGetQueryParameters> | undefined) : RequestInformation;
 }
 /**
- * Open a WebSocket connection to stream logs in real-time (Developer+ required).This endpoint upgrades the HTTP connection to WebSocket.
+ * Open a keep alive connection to stream logs via server sent events (SSE) (Developer+ required).The stream sends events in SSE format:- `data:` events contain log lines- `event: error` indicates streaming errors- `event: done` indicates stream completion- `: heartbeat` comments are sent every 15 seconds to keep the connection alive
  */
 export interface StreamRequestBuilderGetQueryParameters {
     /**
-     * Deployment ID to stream logs for
+     * Service or deployment ID to stream logs for
      */
-    deploymentId?: string;
+    id?: string;
     /**
-     * Service ID to stream logs for
+     * Bearer token for authentication
      */
-    serviceId?: string;
+    token?: string;
 }
 /**
  * Uri template for the request builder.
  */
-export const StreamRequestBuilderUriTemplate = "{+baseurl}/logs/stream{?deployment_id*,service_id*}";
-/**
- * Mapper for query parameters from symbol name to serialization name represented as a constant.
- */
-const StreamRequestBuilderGetQueryParametersMapper: Record<string, string> = {
-    "deploymentId": "deployment_id",
-    "serviceId": "service_id",
-};
+export const StreamRequestBuilderUriTemplate = "{+baseurl}/logs/stream?id={id}&token={token}";
 /**
  * Metadata for all the requests in the request builder.
  */
 export const StreamRequestBuilderRequestsMetadata: RequestsMetadata = {
     get: {
         uriTemplate: StreamRequestBuilderUriTemplate,
-        responseBodyContentType: "application/json",
+        responseBodyContentType: "text/event-stream, application/json",
         errorMappings: {
             400: createErrorEscapedFromDiscriminatorValue as ParsableFactory<Parsable>,
             401: createErrorEscapedFromDiscriminatorValue as ParsableFactory<Parsable>,
             403: createErrorEscapedFromDiscriminatorValue as ParsableFactory<Parsable>,
+            405: createErrorEscapedFromDiscriminatorValue as ParsableFactory<Parsable>,
             500: createErrorEscapedFromDiscriminatorValue as ParsableFactory<Parsable>,
         },
         adapterMethodName: "sendPrimitive",
         responseBodyFactory:  "ArrayBuffer",
-        queryParametersMapper: StreamRequestBuilderGetQueryParametersMapper,
     },
 };
 /* tslint:enable */
