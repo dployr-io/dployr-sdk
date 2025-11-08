@@ -28,7 +28,7 @@ jobs:
 
       - name: Setup Kiota
         run: |
-          dotnet tool install --global Microsoft.Kiota --version 1.*
+          dotnet tool install --global Microsoft.Kiota
           echo "${HOME}/.dotnet/tools" >> $GITHUB_PATH
 
       - name: Generate SDK
