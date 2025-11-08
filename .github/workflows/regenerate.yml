@@ -34,10 +34,11 @@ jobs:
           kiota generate \
             -l typescript \
             -d openapi.yaml \
-            -o ./client \
+            -o ./typescript/client \
             --class-name DployrClient
 
       - name: Build SDK
+        working-directory: ./typescript
         run: |
           npm install
           npm run build
