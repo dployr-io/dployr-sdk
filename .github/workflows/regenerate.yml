@@ -22,6 +22,11 @@ jobs:
         with:
           node-version: 20
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
       - name: Download latest API spec
         run: |
           curl -fsSL "${{ github.event.client_payload.spec_url }}" -o openapi.yaml
@@ -31,7 +36,7 @@ jobs:
         with:
           version: v1.29.0
 
-      - name: Generate SDK
+      - name: Generate TypeScript SDK
         run: |
           kiota generate \
             -l typescript \
@@ -39,11 +44,25 @@ jobs:
             -o ./typescript/client \
             --class-name DployrClient
 
-      - name: Build SDK
+      - name: Build TypeScript SDK
         working-directory: ./typescript
         run: |
           npm install
           npm run build
+
+      - name: Generate Python SDK
+        run: |
+          kiota generate \
+            -l python \
+            -d openapi.yaml \
+            -o ./python/client \
+            --class-name DployrClient
+
+      - name: Build Python SDK
+        working-directory: ./python
+        run: |
+          pip install build
+          python -m build
 
       - name: Determine version bump
         id: bump
@@ -54,11 +73,29 @@ jobs:
             echo "bump=minor" >> $GITHUB_OUTPUT
           fi
 
-      - name: Bump SDK version
+      - name: Bump TypeScript SDK version
         working-directory: ./typescript
         run: |
           npm version ${{ steps.bump.outputs.bump }} --no-git-tag-version
           git add package.json package-lock.json
+
+      - name: Bump Python SDK version
+        working-directory: ./python
+        run: |
+          pip install tomli
+          CURRENT_VERSION=$(python -c "import tomli; print(tomli.load(open('pyproject.toml', 'rb'))['project']['version'])")
+          
+          IFS='.' read -r major minor patch <<< "$CURRENT_VERSION"
+          
+          if [ "${{ steps.bump.outputs.bump }}" == "major" ]; then
+            NEW_VERSION="$((major + 1)).0.0"
+          else
+            NEW_VERSION="$major.$((minor + 1)).0"
+          fi
+          
+          sed -i "s/version = \"$CURRENT_VERSION\"/version = \"$NEW_VERSION\"/" pyproject.toml
+          sed -i "s/__version__ = \"$CURRENT_VERSION\"/__version__ = \"$NEW_VERSION\"/" src/dployr_sdk/__init__.py
+          git add pyproject.toml src/dployr_sdk/__init__.py
 
       - name: Commit SDK changes
         id: commit

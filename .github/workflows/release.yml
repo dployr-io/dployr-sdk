@@ -8,6 +8,7 @@ on:
       - main
 
 permissions:
+  id-token: write
   contents: write
 
 jobs:
@@ -20,6 +21,11 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ secrets.SYNC_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
       - name: Get version from package.json
         id: package-version
@@ -62,13 +68,27 @@ jobs:
           cache-dependency-path: './typescript/package-lock.json'
           registry-url: 'https://registry.npmjs.org'
 
-      - name: Install dependencies
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install TypeScript dependencies
         working-directory: ./typescript
         run: npm install
 
-      - name: Build package
+      - name: Build TypeScript package
         working-directory: ./typescript
         run: npm run build
+
+      - name: Install Python dependencies
+        working-directory: ./python
+        run: |
+          pip install build twine
+
+      - name: Build Python package
+        working-directory: ./python
+        run: python -m build
 
       - name: Extract version from tag
         run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
@@ -102,18 +122,30 @@ jobs:
             
             ## Installation
             
+            **TypeScript/JavaScript:**
             ```bash
             npm install @dployr-io/dployr-sdk@${{ env.VERSION }}
             ```
             
+            **Python:**
+            ```bash
+            pip install dployr-sdk==${{ env.VERSION }}
+            ```
+            
             ## Documentation
             
-            Visit [documentation site](https://docs.dployr.dev/sdk/typescript) for usage examples and API reference.
+            - [TypeScript SDK](https://docs.dployr.dev/sdk/typescript)
+            - [Python SDK](https://docs.dployr.dev/sdk/python)
           draft: false
           prerelease: false
 
-      - name: Publish to NPM
+      - name: Publish TypeScript to NPM
         working-directory: ./typescript
         run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # - name: Publish Python to PyPI
+      #   working-directory: ./python
+      #   run: python -m twine upload dist/*
+      #   env:
+      #     TWINE_USERNAME: __token__
+      #     TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
