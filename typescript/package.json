@@ -1,15 +1,12 @@
 {
   "name": "@dployr-io/dployr-sdk",
-  "version": "1.1.0",
+  "version": "1.0.0",
   "type": "module",
-  "description": "TypeScript SDK generated with Microsoft Kiota",
+  "description": "TypeScript SDK for dployr",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "scripts": {
-    "generate": "kiota generate -l typescript -d ./openapi.yaml -o ./client --class-name ApiClient",
-    "build": "tsc",
-    "start": "node dist/examples/usage.js",
-    "clean": "rm -rf dist client"
+    "build": "tsc"
   },
   "devDependencies": {
     "typescript": "^5.6.3"

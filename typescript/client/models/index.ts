@@ -860,7 +860,7 @@ export interface LoginResponse extends AdditionalDataHolder, Parsable {
      */
     refreshToken?: string | null;
     /**
-     * User role hierarchy (owner > admin > developer > viewer):- **owner**: Full system control, manage admins, uninstall dployr- **admin**: Secrets, users, proxies, shell access- **developer**: Deploy apps, view logs, events, resource graph- **viewer**: Read-only access to services
+     * User role hierarchy (owner > admin > developer > viewer):- **owner**: Full system control, manage admins, uninstall dployr- **admin**: Infrastructure management, secrets, users, proxies, shell access- **developer**: Deploy apps, view logs, events, resource graph- **viewer**: Read-only access to services
      */
     role?: Role | null;
     /**
@@ -1576,7 +1576,7 @@ export interface User extends AdditionalDataHolder, Parsable {
      */
     id?: string | null;
     /**
-     * User role hierarchy (owner > admin > developer > viewer):- **owner**: Full system control, manage admins, uninstall dployr- **admin**: Secrets, users, proxies, shell access- **developer**: Deploy apps, view logs, events, resource graph- **viewer**: Read-only access to services
+     * User role hierarchy (owner > admin > developer > viewer):- **owner**: Full system control, manage admins, uninstall dployr- **admin**: Infrastructure management, secrets, users, proxies, shell access- **developer**: Deploy apps, view logs, events, resource graph- **viewer**: Read-only access to services
      */
     role?: Role | null;
     /**
@@ -1619,7 +1619,7 @@ export const DeployRequest_sourceObject = {
     Image: "image",
 } as const;
 /**
- * User role hierarchy (owner > admin > developer > viewer):- **owner**: Full system control, manage admins, uninstall dployr- **admin**: Secrets, users, proxies, shell access- **developer**: Deploy apps, view logs, events, resource graph- **viewer**: Read-only access to services
+ * User role hierarchy (owner > admin > developer > viewer):- **owner**: Full system control, manage admins, uninstall dployr- **admin**: Infrastructure management, secrets, users, proxies, shell access- **developer**: Deploy apps, view logs, events, resource graph- **viewer**: Read-only access to services
  */
 export const RoleObject = {
     Owner: "owner",
