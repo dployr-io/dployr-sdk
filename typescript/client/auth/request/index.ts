@@ -39,7 +39,7 @@ export interface RequestPostRequestBody extends AdditionalDataHolder, Parsable {
      */
     lifespan?: string | null;
     /**
-     * Owner secret key (required only for first owner creation)
+     * Bootstrap token used to create the first owner user.This must be a JWT signed with the instance's private RSA key andhave a token_type of "bootstrap". It is only required for thefirst owner creation.
      */
     secret?: string | null;
     /**

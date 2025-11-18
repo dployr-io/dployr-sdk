@@ -73,8 +73,13 @@ paths:
                   example: "24h"
                 secret:
                   type: string
-                  description: Owner secret key (required only for first owner creation)
-                  example: "owner-secret-key"
+                  description: |
+                    Bootstrap token used to create the first owner user.
+
+                    This must be a JWT signed with the instance's private RSA key and
+                    have a token_type of "bootstrap". It is only required for the
+                    first owner creation.
+                  example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9..."
                 username:
                   type: string
                   description: System username for role determination via groups
@@ -524,9 +529,9 @@ paths:
                 type: string
                 description: Server-Sent Events stream with log data
                 example: |
-                  data: Log line 1
+                  data: cloning repository
                   
-                  data: Log line 2
+                  data: installing nodejs@18.1.0
                   
                   : heartbeat
                   
@@ -721,7 +726,7 @@ components:
       description: |
         User role hierarchy (owner > admin > developer > viewer):
         - **owner**: Full system control, manage admins, uninstall dployr
-        - **admin**: Infrastructure management, secrets, users, proxies, shell access
+        - **admin**: Secrets, users, proxies, shell access
         - **developer**: Deploy apps, view logs, events, resource graph
         - **viewer**: Read-only access to services
 

@@ -28,7 +28,7 @@ export function deserializeIntoRolePutRequestBody(rolePutRequestBody: Partial<Ro
 }
 export interface RolePutRequestBody extends AdditionalDataHolder, Parsable {
     /**
-     * User role hierarchy (owner > admin > developer > viewer):- **owner**: Full system control, manage admins, uninstall dployr- **admin**: Infrastructure management, secrets, users, proxies, shell access- **developer**: Deploy apps, view logs, events, resource graph- **viewer**: Read-only access to services
+     * User role hierarchy (owner > admin > developer > viewer):- **owner**: Full system control, manage admins, uninstall dployr- **admin**: Secrets, users, proxies, shell access- **developer**: Deploy apps, view logs, events, resource graph- **viewer**: Read-only access to services
      */
     role?: Role | null;
 }
