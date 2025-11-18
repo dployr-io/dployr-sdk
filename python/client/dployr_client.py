@@ -1,0 +1,113 @@
+from __future__ import annotations
+from collections.abc import Callable
+from kiota_abstractions.api_client_builder import enable_backing_store_for_serialization_writer_factory, register_default_deserializer, register_default_serializer
+from kiota_abstractions.base_request_builder import BaseRequestBuilder
+from kiota_abstractions.get_path_parameters import get_path_parameters
+from kiota_abstractions.request_adapter import RequestAdapter
+from kiota_abstractions.serialization import ParseNodeFactoryRegistry, SerializationWriterFactoryRegistry
+from kiota_serialization_form.form_parse_node_factory import FormParseNodeFactory
+from kiota_serialization_form.form_serialization_writer_factory import FormSerializationWriterFactory
+from kiota_serialization_json.json_parse_node_factory import JsonParseNodeFactory
+from kiota_serialization_json.json_serialization_writer_factory import JsonSerializationWriterFactory
+from kiota_serialization_multipart.multipart_serialization_writer_factory import MultipartSerializationWriterFactory
+from kiota_serialization_text.text_parse_node_factory import TextParseNodeFactory
+from kiota_serialization_text.text_serialization_writer_factory import TextSerializationWriterFactory
+from typing import Any, Optional, TYPE_CHECKING, Union
+
+if TYPE_CHECKING:
+    from .auth.auth_request_builder import AuthRequestBuilder
+    from .deployments.deployments_request_builder import DeploymentsRequestBuilder
+    from .logs.logs_request_builder import LogsRequestBuilder
+    from .proxy.proxy_request_builder import ProxyRequestBuilder
+    from .services.services_request_builder import ServicesRequestBuilder
+    from .system.system_request_builder import SystemRequestBuilder
+    from .users.users_request_builder import UsersRequestBuilder
+
+class DployrClient(BaseRequestBuilder):
+    """
+    The main entry point of the SDK, exposes the configuration and the fluent API.
+    """
+    def __init__(self,request_adapter: RequestAdapter) -> None:
+        """
+        Instantiates a new DployrClient and sets the default values.
+        param request_adapter: The request adapter to use to execute the requests.
+        Returns: None
+        """
+        if request_adapter is None:
+            raise TypeError("request_adapter cannot be null.")
+        super().__init__(request_adapter, "{+baseurl}", None)
+        register_default_serializer(JsonSerializationWriterFactory)
+        register_default_serializer(TextSerializationWriterFactory)
+        register_default_serializer(FormSerializationWriterFactory)
+        register_default_serializer(MultipartSerializationWriterFactory)
+        register_default_deserializer(JsonParseNodeFactory)
+        register_default_deserializer(TextParseNodeFactory)
+        register_default_deserializer(FormParseNodeFactory)
+        if not self.request_adapter.base_url:
+            self.request_adapter.base_url = "https://raw.githubusercontent.com/dployr-io/dployr/refs/heads/master/api/{address}"
+        self.path_parameters["base_url"] = self.request_adapter.base_url
+    
+    @property
+    def auth(self) -> AuthRequestBuilder:
+        """
+        The auth property
+        """
+        from .auth.auth_request_builder import AuthRequestBuilder
+
+        return AuthRequestBuilder(self.request_adapter, self.path_parameters)
+    
+    @property
+    def deployments(self) -> DeploymentsRequestBuilder:
+        """
+        The deployments property
+        """
+        from .deployments.deployments_request_builder import DeploymentsRequestBuilder
+
+        return DeploymentsRequestBuilder(self.request_adapter, self.path_parameters)
+    
+    @property
+    def logs(self) -> LogsRequestBuilder:
+        """
+        The logs property
+        """
+        from .logs.logs_request_builder import LogsRequestBuilder
+
+        return LogsRequestBuilder(self.request_adapter, self.path_parameters)
+    
+    @property
+    def proxy(self) -> ProxyRequestBuilder:
+        """
+        The proxy property
+        """
+        from .proxy.proxy_request_builder import ProxyRequestBuilder
+
+        return ProxyRequestBuilder(self.request_adapter, self.path_parameters)
+    
+    @property
+    def services(self) -> ServicesRequestBuilder:
+        """
+        The services property
+        """
+        from .services.services_request_builder import ServicesRequestBuilder
+
+        return ServicesRequestBuilder(self.request_adapter, self.path_parameters)
+    
+    @property
+    def system(self) -> SystemRequestBuilder:
+        """
+        The system property
+        """
+        from .system.system_request_builder import SystemRequestBuilder
+
+        return SystemRequestBuilder(self.request_adapter, self.path_parameters)
+    
+    @property
+    def users(self) -> UsersRequestBuilder:
+        """
+        The users property
+        """
+        from .users.users_request_builder import UsersRequestBuilder
+
+        return UsersRequestBuilder(self.request_adapter, self.path_parameters)
+    
+
