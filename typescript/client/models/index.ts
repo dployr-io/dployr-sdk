@@ -149,15 +149,6 @@ export function createErrorEscapedFromDiscriminatorValue(parseNode: ParseNode | 
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
- * @returns {LoginResponse}
- */
-// @ts-ignore
-export function createLoginResponseFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
-    return deserializeIntoLoginResponse;
-}
-/**
- * Creates a new instance of the appropriate class based on discriminator value
- * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {ProxyRoute}
  */
 // @ts-ignore
@@ -271,24 +262,6 @@ export function createSystemStatus_servicesFromDiscriminatorValue(parseNode: Par
 // @ts-ignore
 export function createSystemStatusFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
     return deserializeIntoSystemStatus;
-}
-/**
- * Creates a new instance of the appropriate class based on discriminator value
- * @param parseNode The parse node to use to read the discriminator value and create the object
- * @returns {TokenClaims}
- */
-// @ts-ignore
-export function createTokenClaimsFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
-    return deserializeIntoTokenClaims;
-}
-/**
- * Creates a new instance of the appropriate class based on discriminator value
- * @param parseNode The parse node to use to read the discriminator value and create the object
- * @returns {User}
- */
-// @ts-ignore
-export function createUserFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
-    return deserializeIntoUser;
 }
 /**
  * Creates a new instance of the appropriate class based on discriminator value
@@ -574,21 +547,6 @@ export function deserializeIntoErrorEscaped(errorEscaped: Partial<ErrorEscaped> 
 }
 /**
  * The deserialization information for the current model
- * @param LoginResponse The instance to deserialize into.
- * @returns {Record<string, (node: ParseNode) => void>}
- */
-// @ts-ignore
-export function deserializeIntoLoginResponse(loginResponse: Partial<LoginResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
-    return {
-        "access_token": n => { loginResponse.accessToken = n.getStringValue(); },
-        "expires_at": n => { loginResponse.expiresAt = n.getDateValue(); },
-        "refresh_token": n => { loginResponse.refreshToken = n.getStringValue(); },
-        "role": n => { loginResponse.role = n.getEnumValue<Role>(RoleObject); },
-        "user": n => { loginResponse.user = n.getStringValue(); },
-    }
-}
-/**
- * The deserialization information for the current model
  * @param ProxyRoute The instance to deserialize into.
  * @returns {Record<string, (node: ParseNode) => void>}
  */
@@ -775,36 +733,6 @@ export function deserializeIntoSystemStatus_services(systemStatus_services: Part
 }
 /**
  * The deserialization information for the current model
- * @param TokenClaims The instance to deserialize into.
- * @returns {Record<string, (node: ParseNode) => void>}
- */
-// @ts-ignore
-export function deserializeIntoTokenClaims(tokenClaims: Partial<TokenClaims> | undefined = {}) : Record<string, (node: ParseNode) => void> {
-    return {
-        "email": n => { tokenClaims.email = n.getStringValue(); },
-        "exp": n => { tokenClaims.exp = n.getNumberValue(); },
-        "iat": n => { tokenClaims.iat = n.getNumberValue(); },
-        "token_type": n => { tokenClaims.tokenType = n.getEnumValue<TokenClaims_token_type>(TokenClaims_token_typeObject); },
-        "username": n => { tokenClaims.username = n.getStringValue(); },
-    }
-}
-/**
- * The deserialization information for the current model
- * @param User The instance to deserialize into.
- * @returns {Record<string, (node: ParseNode) => void>}
- */
-// @ts-ignore
-export function deserializeIntoUser(user: Partial<User> | undefined = {}) : Record<string, (node: ParseNode) => void> {
-    return {
-        "created_at": n => { user.createdAt = n.getDateValue(); },
-        "email": n => { user.email = n.getStringValue(); },
-        "id": n => { user.id = n.getStringValue(); },
-        "role": n => { user.role = n.getEnumValue<Role>(RoleObject); },
-        "updated_at": n => { user.updatedAt = n.getDateValue(); },
-    }
-}
-/**
- * The deserialization information for the current model
  * @param ValidationError The instance to deserialize into.
  * @returns {Record<string, (node: ParseNode) => void>}
  */
@@ -846,28 +774,6 @@ export interface ErrorEscaped extends AdditionalDataHolder, ApiError, Parsable {
      */
     errorEscaped?: string | null;
 }
-export interface LoginResponse extends AdditionalDataHolder, Parsable {
-    /**
-     * JWT access token (10 minute lifespan)
-     */
-    accessToken?: string | null;
-    /**
-     * Refresh token expiration time
-     */
-    expiresAt?: Date | null;
-    /**
-     * JWT refresh token (24+ hour lifespan)
-     */
-    refreshToken?: string | null;
-    /**
-     * User role hierarchy (owner > admin > developer > viewer):- **owner**: Full system control, manage admins, uninstall dployr- **admin**: Infrastructure management, secrets, users, proxies, shell access- **developer**: Deploy apps, view logs, events, resource graph- **viewer**: Read-only access to services
-     */
-    role?: Role | null;
-    /**
-     * User email
-     */
-    user?: string | null;
-}
 export interface ProxyRoute extends AdditionalDataHolder, Parsable {
     /**
      * The domain property
@@ -898,7 +804,6 @@ export interface RemoteObj extends AdditionalDataHolder, Parsable {
      */
     url?: string | null;
 }
-export type Role = (typeof RoleObject)[keyof typeof RoleObject];
 export type Runtime = (typeof RuntimeObject)[keyof typeof RuntimeObject];
 export interface RuntimeObj extends AdditionalDataHolder, Parsable {
     /**
@@ -1054,22 +959,6 @@ export function serializeErrorEscaped(writer: SerializationWriter, errorEscaped:
     writer.writeObjectValue<Error_details>("details", errorEscaped.details, serializeError_details);
     writer.writeStringValue("error", errorEscaped.errorEscaped);
     writer.writeAdditionalData(errorEscaped.additionalData);
-}
-/**
- * Serializes information the current object
- * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
- * @param LoginResponse The instance to serialize from.
- * @param writer Serialization writer to use to serialize this model
- */
-// @ts-ignore
-export function serializeLoginResponse(writer: SerializationWriter, loginResponse: Partial<LoginResponse> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
-    if (!loginResponse || isSerializingDerivedType) { return; }
-    writer.writeStringValue("access_token", loginResponse.accessToken);
-    writer.writeDateValue("expires_at", loginResponse.expiresAt);
-    writer.writeStringValue("refresh_token", loginResponse.refreshToken);
-    writer.writeEnumValue<Role>("role", loginResponse.role);
-    writer.writeStringValue("user", loginResponse.user);
-    writer.writeAdditionalData(loginResponse.additionalData);
 }
 /**
  * Serializes information the current object
@@ -1269,38 +1158,6 @@ export function serializeSystemStatus_services(writer: SerializationWriter, syst
     writer.writeNumberValue("stopped", systemStatus_services.stopped);
     writer.writeNumberValue("total", systemStatus_services.total);
     writer.writeAdditionalData(systemStatus_services.additionalData);
-}
-/**
- * Serializes information the current object
- * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
- * @param TokenClaims The instance to serialize from.
- * @param writer Serialization writer to use to serialize this model
- */
-// @ts-ignore
-export function serializeTokenClaims(writer: SerializationWriter, tokenClaims: Partial<TokenClaims> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
-    if (!tokenClaims || isSerializingDerivedType) { return; }
-    writer.writeStringValue("email", tokenClaims.email);
-    writer.writeNumberValue("exp", tokenClaims.exp);
-    writer.writeNumberValue("iat", tokenClaims.iat);
-    writer.writeEnumValue<TokenClaims_token_type>("token_type", tokenClaims.tokenType);
-    writer.writeStringValue("username", tokenClaims.username);
-    writer.writeAdditionalData(tokenClaims.additionalData);
-}
-/**
- * Serializes information the current object
- * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
- * @param User The instance to serialize from.
- * @param writer Serialization writer to use to serialize this model
- */
-// @ts-ignore
-export function serializeUser(writer: SerializationWriter, user: Partial<User> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
-    if (!user || isSerializingDerivedType) { return; }
-    writer.writeDateValue("created_at", user.createdAt);
-    writer.writeStringValue("email", user.email);
-    writer.writeStringValue("id", user.id);
-    writer.writeEnumValue<Role>("role", user.role);
-    writer.writeDateValue("updated_at", user.updatedAt);
-    writer.writeAdditionalData(user.additionalData);
 }
 /**
  * Serializes information the current object
@@ -1539,51 +1396,6 @@ export interface SystemStatus_services extends AdditionalDataHolder, Parsable {
     total?: number | null;
 }
 export type SystemStatus_status = (typeof SystemStatus_statusObject)[keyof typeof SystemStatus_statusObject];
-export interface TokenClaims extends AdditionalDataHolder, Parsable {
-    /**
-     * The email property
-     */
-    email?: string | null;
-    /**
-     * Expiration timestamp (Unix)
-     */
-    exp?: number | null;
-    /**
-     * Issued at timestamp (Unix)
-     */
-    iat?: number | null;
-    /**
-     * Type of JWT token
-     */
-    tokenType?: TokenClaims_token_type | null;
-    /**
-     * System username
-     */
-    username?: string | null;
-}
-export type TokenClaims_token_type = (typeof TokenClaims_token_typeObject)[keyof typeof TokenClaims_token_typeObject];
-export interface User extends AdditionalDataHolder, Parsable {
-    /**
-     * The created_at property
-     */
-    createdAt?: Date | null;
-    /**
-     * The email property
-     */
-    email?: string | null;
-    /**
-     * The id property
-     */
-    id?: string | null;
-    /**
-     * User role hierarchy (owner > admin > developer > viewer):- **owner**: Full system control, manage admins, uninstall dployr- **admin**: Infrastructure management, secrets, users, proxies, shell access- **developer**: Deploy apps, view logs, events, resource graph- **viewer**: Read-only access to services
-     */
-    role?: Role | null;
-    /**
-     * The updated_at property
-     */
-    updatedAt?: Date | null;
-}
 export interface ValidationError extends AdditionalDataHolder, ApiError, Parsable {
     /**
      * The details property
@@ -1618,15 +1430,6 @@ export const DeployRequest_sourceObject = {
     Remote: "remote",
     Image: "image",
 } as const;
-/**
- * User role hierarchy (owner > admin > developer > viewer):- **owner**: Full system control, manage admins, uninstall dployr- **admin**: Infrastructure management, secrets, users, proxies, shell access- **developer**: Deploy apps, view logs, events, resource graph- **viewer**: Read-only access to services
- */
-export const RoleObject = {
-    Owner: "owner",
-    Admin: "admin",
-    Developer: "developer",
-    Viewer: "viewer",
-} as const;
 export const RuntimeObject = {
     Static: "static",
     Golang: "golang",
@@ -1644,13 +1447,6 @@ export const SystemStatus_statusObject = {
     Healthy: "healthy",
     Degraded: "degraded",
     Unhealthy: "unhealthy",
-} as const;
-/**
- * Type of JWT token
- */
-export const TokenClaims_token_typeObject = {
-    Access: "access",
-    Refresh: "refresh",
 } as const;
 /* tslint:enable */
 /* eslint-enable */
