@@ -139,7 +139,10 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Publish TypeScript to NPM
+      - name: GitHub OIDC with npm
+        run: npm auth oidc-login
+
+      - name: Publish TypeScript package to npm
         working-directory: ./typescript
         run: npm publish --access public
 
