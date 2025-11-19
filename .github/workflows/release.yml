@@ -69,7 +69,10 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Upgrade npm
-        run: npm install -g npm@latest
+        run: |
+          corepack disable
+          npm install -g npm@latest
+          npm --version
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -143,11 +146,11 @@ jobs:
           prerelease: false
 
       - name: GitHub OIDC with npm
-        run: npm auth oidc-login
+        run: npm login --auth-type=oidc
 
       - name: Publish TypeScript package to npm
         working-directory: ./typescript
-        run: npm publish --access public
+        run: npm publish --provenance --access public
 
       # - name: Publish Python to PyPI
       #   working-directory: ./python
