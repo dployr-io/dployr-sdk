@@ -68,6 +68,9 @@ jobs:
           cache-dependency-path: './typescript/package-lock.json'
           registry-url: 'https://registry.npmjs.org'
 
+      - name: Upgrade npm
+        run: npm install -g npm@latest
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
