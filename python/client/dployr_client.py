@@ -15,13 +15,11 @@ from kiota_serialization_text.text_serialization_writer_factory import TextSeria
 from typing import Any, Optional, TYPE_CHECKING, Union
 
 if TYPE_CHECKING:
-    from .auth.auth_request_builder import AuthRequestBuilder
     from .deployments.deployments_request_builder import DeploymentsRequestBuilder
     from .logs.logs_request_builder import LogsRequestBuilder
     from .proxy.proxy_request_builder import ProxyRequestBuilder
     from .services.services_request_builder import ServicesRequestBuilder
     from .system.system_request_builder import SystemRequestBuilder
-    from .users.users_request_builder import UsersRequestBuilder
 
 class DployrClient(BaseRequestBuilder):
     """
@@ -44,17 +42,8 @@ class DployrClient(BaseRequestBuilder):
         register_default_deserializer(TextParseNodeFactory)
         register_default_deserializer(FormParseNodeFactory)
         if not self.request_adapter.base_url:
-            self.request_adapter.base_url = "https://raw.githubusercontent.com/dployr-io/dployr/refs/heads/master/api/{address}"
+            self.request_adapter.base_url = "{address}"
         self.path_parameters["base_url"] = self.request_adapter.base_url
-    
-    @property
-    def auth(self) -> AuthRequestBuilder:
-        """
-        The auth property
-        """
-        from .auth.auth_request_builder import AuthRequestBuilder
-
-        return AuthRequestBuilder(self.request_adapter, self.path_parameters)
     
     @property
     def deployments(self) -> DeploymentsRequestBuilder:
@@ -100,14 +89,5 @@ class DployrClient(BaseRequestBuilder):
         from .system.system_request_builder import SystemRequestBuilder
 
         return SystemRequestBuilder(self.request_adapter, self.path_parameters)
-    
-    @property
-    def users(self) -> UsersRequestBuilder:
-        """
-        The users property
-        """
-        from .users.users_request_builder import UsersRequestBuilder
-
-        return UsersRequestBuilder(self.request_adapter, self.path_parameters)
     
 
