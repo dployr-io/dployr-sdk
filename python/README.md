@@ -18,30 +18,100 @@ uv add dployr-sdk
 from dployr_sdk import create_dployr_client
 
 # Connect to your Dployr instance
-client, token_manager = create_dployr_client('https://your-dployr-instance.com')
+client, token_manager = create_dployr_client("https://your-dployr-instance.com")
 
-# Login to get authentication tokens
-auth = await client.auth.request.post({
-    'email': 'user@example.com'
-})
+# Obtain a JWT access token from your dployr base server
+# (see https://docs.dployr.dev/auth for details on how to authenticate with base)
+access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."  # issued by base
 
-# Store tokens for authenticated requests
-token_manager.set_tokens(auth.access_token, auth.refresh_token)
+# Set the token so all requests to the instance are authenticated
+token_manager.set_access_token(access_token)
 
-# Now you can make authenticated API calls
+# Now you can make authenticated API calls to the instance
 deployments = await client.deployments.get()
 services = await client.services.get()
 ```
 
 ## Authentication
 
-The SDK uses JWT-based authentication with access and refresh tokens:
+The SDK uses JWT-based authentication with tokens **issued by base**:
 
-- **Access tokens** are short-lived (~10 minutes) and used for API requests
-- **Refresh tokens** are long-lived (24+ hours) and used to obtain new access tokens
+- **Access tokens** are short-lived (~10 minutes) and used for API requests to instances
+- **Refresh tokens** are long-lived (24+ hours) and used to obtain new access tokens from base
 
-Use the `TokenManager` to store and manage your tokens after login.
+Use the `TokenManager` to store and manage the tokens you receive from base. The SDK does not
+auto-refresh tokens; if an access token expires you should:
+
+1. Call your base server's refresh endpoint to get a new access token.
+2. Update the SDK's token manager, e.g. `token_manager.set_access_token(new_access_token)`.
+3. Retry the failed request if needed.
+
+For the full authentication flow and examples of obtaining tokens from base, see
+https://docs.dployr.dev/auth.
+
+## Client overview
+
+`create_dployr_client` returns a `client` with:
+
+- `client.deployments` – list and create deployments.
+- `client.services` – list services and access a single service by ID.
+- `client.logs` – access log streaming.
+- `client.proxy` – inspect and change proxy routes and status.
+- `client.system` – read system health and info.
+
+Each property exposes request builders generated from the OpenAPI description. Most methods
+follow the pattern `get()`, `post(body)`, `delete()`, or `patch(body)` and return typed
+models.
+
+## Common operations
+
+List deployments:
+
+```python
+deployments = await client.deployments.get({
+    "limit": 20,
+    "offset": 0,
+})
+```
+
+List services:
+
+```python
+services = await client.services.get({
+    "limit": 20,
+    "offset": 0,
+})
+```
+
+Get a single service:
+
+```python
+service = await client.services.by_service_id("service-id").get()
+```
+
+Stream logs for a service or deployment (Server-Sent Events):
+
+```python
+response = await client.logs.stream.get({
+    "token": access_token,
+    "id": "service-or-deployment-id",
+})
+# Handle the text/event-stream response using your HTTP client.
+```
+
+Check system status:
+
+```python
+status = await client.system.status.get()
+```
+
+Restart proxy:
+
+```python
+result = await client.proxy.restart.post()
+```
 
 ## Documentation
 
-For full API reference and guides, visit [dployr docs](https://docs.dployr.dev).
+For full API reference and guides, including all request/response types, visit
+[dployr docs](https://docs.dployr.dev).

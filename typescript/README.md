@@ -20,28 +20,95 @@ import { createDployrClient } from '@dployr-io/dployr-sdk';
 // Connect to your Dployr instance
 const { client, tokenManager } = createDployrClient('https://your-dployr-instance.com');
 
-// Login to get authentication tokens
-const auth = await client.auth.request.post({
-  email: 'user@example.com'
-});
+// Obtain a JWT access token from your dployr base server
+// (see https://docs.dployr.dev/auth for details on how to authenticate with base)
+const accessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // issued by base
 
-// Store tokens for authenticated requests
-tokenManager.setTokens(auth.access_token, auth.refresh_token);
+// Set the token so all requests to the instance are authenticated
+tokenManager.setAccessToken(accessToken);
 
-// Now you can make authenticated API calls
+// Now you can make authenticated API calls to the instance
 const deployments = await client.deployments.get();
 const services = await client.services.get();
 ```
 
 ## Authentication
 
-The SDK uses JWT-based authentication with access and refresh tokens:
+The SDK uses JWT-based authentication with tokens **issued by base**:
 
-- **Access tokens** are short-lived (~10 minutes) and used for API requests
-- **Refresh tokens** are long-lived (24+ hours) and used to obtain new access tokens
+- **Access tokens** are short-lived (~10 minutes) and used for API requests to instances
+- **Refresh tokens** are long-lived (24+ hours) and used to obtain new access tokens from base
 
-Use the `TokenManager` to store and manage your tokens after login.
+Use the `TokenManager` to store and manage the tokens you receive from base. The SDK does not
+auto-refresh tokens; if an access token expires you should:
+
+1. Call your base server's refresh endpoint to get a new access token.
+2. Update the SDK's token manager, e.g. `tokenManager.setAccessToken(newAccessToken)`.
+3. Retry the failed request if needed.
+
+For the full authentication flow and examples of obtaining tokens from base, see
+https://docs.dployr.dev/auth.
+
+## Client overview
+
+`createDployrClient` returns an object with:
+
+- `client.deployments` – list and create deployments.
+- `client.services` – list services and access a single service by ID.
+- `client.logs` – access log streaming.
+- `client.proxy` – inspect and change proxy routes and status.
+- `client.system` – read system health and info.
+
+Each property exposes request builders generated from the OpenAPI description. Most methods
+follow the pattern `get()`, `post(body)`, `delete()`, or `patch(body)` and return typed
+responses.
+
+## Common operations
+
+List deployments:
+
+```typescript
+const deployments = await client.deployments.get({
+  queryParameters: { limit: 20, offset: 0 },
+});
+```
+
+List services:
+
+```typescript
+const services = await client.services.get({
+  queryParameters: { limit: 20, offset: 0 },
+});
+```
+
+Get a single service:
+
+```typescript
+const service = await client.services.byServiceId('service-id').get();
+```
+
+Stream logs for a service or deployment (Server-Sent Events):
+
+```typescript
+const response = await client.logs.stream.get({
+  queryParameters: { token: accessToken, id: 'service-or-deployment-id' },
+});
+// Handle the text/event-stream response using your HTTP stack.
+```
+
+Check system status:
+
+```typescript
+const status = await client.system.status.get();
+```
+
+Restart proxy:
+
+```typescript
+const result = await client.proxy.restart.post();
+```
 
 ## Documentation
 
-For full API reference and guides, visit [dployr docs](https://docs.dployr.dev).
+For full API reference and guides, including all request/response types, visit
+[dployr docs](https://docs.dployr.dev).
