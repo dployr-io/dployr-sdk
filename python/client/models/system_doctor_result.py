@@ -4,51 +4,38 @@ from dataclasses import dataclass, field
 from kiota_abstractions.serialization import AdditionalDataHolder, Parsable, ParseNode, SerializationWriter
 from typing import Any, Optional, TYPE_CHECKING, Union
 
-if TYPE_CHECKING:
-    from .system_info_build import SystemInfo_build
-    from .system_info_hardware import SystemInfo_hardware
-    from .system_info_storage import SystemInfo_storage
-
 @dataclass
-class SystemInfo(AdditionalDataHolder, Parsable):
+class SystemDoctorResult(AdditionalDataHolder, Parsable):
     # Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additional_data: dict[str, Any] = field(default_factory=dict)
 
-    # The build property
-    build: Optional[SystemInfo_build] = None
-    # The hardware property
-    hardware: Optional[SystemInfo_hardware] = None
-    # The storage property
-    storage: Optional[SystemInfo_storage] = None
+    # Error message if status is "error"
+    error: Optional[str] = None
+    # Combined textual output from the doctor/install scripts
+    output: Optional[str] = None
+    # The status property
+    status: Optional[str] = None
     
     @staticmethod
-    def create_from_discriminator_value(parse_node: ParseNode) -> SystemInfo:
+    def create_from_discriminator_value(parse_node: ParseNode) -> SystemDoctorResult:
         """
         Creates a new instance of the appropriate class based on discriminator value
         param parse_node: The parse node to use to read the discriminator value and create the object
-        Returns: SystemInfo
+        Returns: SystemDoctorResult
         """
         if parse_node is None:
             raise TypeError("parse_node cannot be null.")
-        return SystemInfo()
+        return SystemDoctorResult()
     
     def get_field_deserializers(self,) -> dict[str, Callable[[ParseNode], None]]:
         """
         The deserialization information for the current model
         Returns: dict[str, Callable[[ParseNode], None]]
         """
-        from .system_info_build import SystemInfo_build
-        from .system_info_hardware import SystemInfo_hardware
-        from .system_info_storage import SystemInfo_storage
-
-        from .system_info_build import SystemInfo_build
-        from .system_info_hardware import SystemInfo_hardware
-        from .system_info_storage import SystemInfo_storage
-
         fields: dict[str, Callable[[Any], None]] = {
-            "build": lambda n : setattr(self, 'build', n.get_object_value(SystemInfo_build)),
-            "hardware": lambda n : setattr(self, 'hardware', n.get_object_value(SystemInfo_hardware)),
-            "storage": lambda n : setattr(self, 'storage', n.get_object_value(SystemInfo_storage)),
+            "error": lambda n : setattr(self, 'error', n.get_str_value()),
+            "output": lambda n : setattr(self, 'output', n.get_str_value()),
+            "status": lambda n : setattr(self, 'status', n.get_str_value()),
         }
         return fields
     
@@ -60,9 +47,9 @@ class SystemInfo(AdditionalDataHolder, Parsable):
         """
         if writer is None:
             raise TypeError("writer cannot be null.")
-        writer.write_object_value("build", self.build)
-        writer.write_object_value("hardware", self.hardware)
-        writer.write_object_value("storage", self.storage)
+        writer.write_str_value("error", self.error)
+        writer.write_str_value("output", self.output)
+        writer.write_str_value("status", self.status)
         writer.write_additional_data_value(self.additional_data)
     
 
