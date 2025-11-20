@@ -6,7 +6,9 @@ from kiota_abstractions.request_adapter import RequestAdapter
 from typing import Any, Optional, TYPE_CHECKING, Union
 
 if TYPE_CHECKING:
+    from .doctor.doctor_request_builder import DoctorRequestBuilder
     from .info.info_request_builder import InfoRequestBuilder
+    from .install.install_request_builder import InstallRequestBuilder
     from .status.status_request_builder import StatusRequestBuilder
 
 class SystemRequestBuilder(BaseRequestBuilder):
@@ -23,6 +25,15 @@ class SystemRequestBuilder(BaseRequestBuilder):
         super().__init__(request_adapter, "{+baseurl}/system", path_parameters)
     
     @property
+    def doctor(self) -> DoctorRequestBuilder:
+        """
+        The doctor property
+        """
+        from .doctor.doctor_request_builder import DoctorRequestBuilder
+
+        return DoctorRequestBuilder(self.request_adapter, self.path_parameters)
+    
+    @property
     def info(self) -> InfoRequestBuilder:
         """
         The info property
@@ -30,6 +41,15 @@ class SystemRequestBuilder(BaseRequestBuilder):
         from .info.info_request_builder import InfoRequestBuilder
 
         return InfoRequestBuilder(self.request_adapter, self.path_parameters)
+    
+    @property
+    def install(self) -> InstallRequestBuilder:
+        """
+        The install property
+        """
+        from .install.install_request_builder import InstallRequestBuilder
+
+        return InstallRequestBuilder(self.request_adapter, self.path_parameters)
     
     @property
     def status(self) -> StatusRequestBuilder:

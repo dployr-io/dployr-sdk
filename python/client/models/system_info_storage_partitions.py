@@ -4,51 +4,47 @@ from dataclasses import dataclass, field
 from kiota_abstractions.serialization import AdditionalDataHolder, Parsable, ParseNode, SerializationWriter
 from typing import Any, Optional, TYPE_CHECKING, Union
 
-if TYPE_CHECKING:
-    from .system_info_build import SystemInfo_build
-    from .system_info_hardware import SystemInfo_hardware
-    from .system_info_storage import SystemInfo_storage
-
 @dataclass
-class SystemInfo(AdditionalDataHolder, Parsable):
+class SystemInfo_storage_partitions(AdditionalDataHolder, Parsable):
     # Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additional_data: dict[str, Any] = field(default_factory=dict)
 
-    # The build property
-    build: Optional[SystemInfo_build] = None
-    # The hardware property
-    hardware: Optional[SystemInfo_hardware] = None
-    # The storage property
-    storage: Optional[SystemInfo_storage] = None
+    # The available property
+    available: Optional[str] = None
+    # The filesystem property
+    filesystem: Optional[str] = None
+    # The mountpoint property
+    mountpoint: Optional[str] = None
+    # The size property
+    size: Optional[str] = None
+    # The use_percent property
+    use_percent: Optional[str] = None
+    # The used property
+    used: Optional[str] = None
     
     @staticmethod
-    def create_from_discriminator_value(parse_node: ParseNode) -> SystemInfo:
+    def create_from_discriminator_value(parse_node: ParseNode) -> SystemInfo_storage_partitions:
         """
         Creates a new instance of the appropriate class based on discriminator value
         param parse_node: The parse node to use to read the discriminator value and create the object
-        Returns: SystemInfo
+        Returns: SystemInfo_storage_partitions
         """
         if parse_node is None:
             raise TypeError("parse_node cannot be null.")
-        return SystemInfo()
+        return SystemInfo_storage_partitions()
     
     def get_field_deserializers(self,) -> dict[str, Callable[[ParseNode], None]]:
         """
         The deserialization information for the current model
         Returns: dict[str, Callable[[ParseNode], None]]
         """
-        from .system_info_build import SystemInfo_build
-        from .system_info_hardware import SystemInfo_hardware
-        from .system_info_storage import SystemInfo_storage
-
-        from .system_info_build import SystemInfo_build
-        from .system_info_hardware import SystemInfo_hardware
-        from .system_info_storage import SystemInfo_storage
-
         fields: dict[str, Callable[[Any], None]] = {
-            "build": lambda n : setattr(self, 'build', n.get_object_value(SystemInfo_build)),
-            "hardware": lambda n : setattr(self, 'hardware', n.get_object_value(SystemInfo_hardware)),
-            "storage": lambda n : setattr(self, 'storage', n.get_object_value(SystemInfo_storage)),
+            "available": lambda n : setattr(self, 'available', n.get_str_value()),
+            "filesystem": lambda n : setattr(self, 'filesystem', n.get_str_value()),
+            "mountpoint": lambda n : setattr(self, 'mountpoint', n.get_str_value()),
+            "size": lambda n : setattr(self, 'size', n.get_str_value()),
+            "use_percent": lambda n : setattr(self, 'use_percent', n.get_str_value()),
+            "used": lambda n : setattr(self, 'used', n.get_str_value()),
         }
         return fields
     
@@ -60,9 +56,12 @@ class SystemInfo(AdditionalDataHolder, Parsable):
         """
         if writer is None:
             raise TypeError("writer cannot be null.")
-        writer.write_object_value("build", self.build)
-        writer.write_object_value("hardware", self.hardware)
-        writer.write_object_value("storage", self.storage)
+        writer.write_str_value("available", self.available)
+        writer.write_str_value("filesystem", self.filesystem)
+        writer.write_str_value("mountpoint", self.mountpoint)
+        writer.write_str_value("size", self.size)
+        writer.write_str_value("use_percent", self.use_percent)
+        writer.write_str_value("used", self.used)
         writer.write_additional_data_value(self.additional_data)
     
 

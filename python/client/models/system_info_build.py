@@ -4,51 +4,41 @@ from dataclasses import dataclass, field
 from kiota_abstractions.serialization import AdditionalDataHolder, Parsable, ParseNode, SerializationWriter
 from typing import Any, Optional, TYPE_CHECKING, Union
 
-if TYPE_CHECKING:
-    from .system_info_build import SystemInfo_build
-    from .system_info_hardware import SystemInfo_hardware
-    from .system_info_storage import SystemInfo_storage
-
 @dataclass
-class SystemInfo(AdditionalDataHolder, Parsable):
+class SystemInfo_build(AdditionalDataHolder, Parsable):
     # Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additional_data: dict[str, Any] = field(default_factory=dict)
 
-    # The build property
-    build: Optional[SystemInfo_build] = None
-    # The hardware property
-    hardware: Optional[SystemInfo_hardware] = None
-    # The storage property
-    storage: Optional[SystemInfo_storage] = None
+    # Build date - bundled at build time
+    build_date: Optional[str] = None
+    # The commit property
+    commit: Optional[str] = None
+    # The go_version property
+    go_version: Optional[str] = None
+    # The version property
+    version: Optional[str] = None
     
     @staticmethod
-    def create_from_discriminator_value(parse_node: ParseNode) -> SystemInfo:
+    def create_from_discriminator_value(parse_node: ParseNode) -> SystemInfo_build:
         """
         Creates a new instance of the appropriate class based on discriminator value
         param parse_node: The parse node to use to read the discriminator value and create the object
-        Returns: SystemInfo
+        Returns: SystemInfo_build
         """
         if parse_node is None:
             raise TypeError("parse_node cannot be null.")
-        return SystemInfo()
+        return SystemInfo_build()
     
     def get_field_deserializers(self,) -> dict[str, Callable[[ParseNode], None]]:
         """
         The deserialization information for the current model
         Returns: dict[str, Callable[[ParseNode], None]]
         """
-        from .system_info_build import SystemInfo_build
-        from .system_info_hardware import SystemInfo_hardware
-        from .system_info_storage import SystemInfo_storage
-
-        from .system_info_build import SystemInfo_build
-        from .system_info_hardware import SystemInfo_hardware
-        from .system_info_storage import SystemInfo_storage
-
         fields: dict[str, Callable[[Any], None]] = {
-            "build": lambda n : setattr(self, 'build', n.get_object_value(SystemInfo_build)),
-            "hardware": lambda n : setattr(self, 'hardware', n.get_object_value(SystemInfo_hardware)),
-            "storage": lambda n : setattr(self, 'storage', n.get_object_value(SystemInfo_storage)),
+            "build_date": lambda n : setattr(self, 'build_date', n.get_str_value()),
+            "commit": lambda n : setattr(self, 'commit', n.get_str_value()),
+            "go_version": lambda n : setattr(self, 'go_version', n.get_str_value()),
+            "version": lambda n : setattr(self, 'version', n.get_str_value()),
         }
         return fields
     
@@ -60,9 +50,10 @@ class SystemInfo(AdditionalDataHolder, Parsable):
         """
         if writer is None:
             raise TypeError("writer cannot be null.")
-        writer.write_object_value("build", self.build)
-        writer.write_object_value("hardware", self.hardware)
-        writer.write_object_value("storage", self.storage)
+        writer.write_str_value("build_date", self.build_date)
+        writer.write_str_value("commit", self.commit)
+        writer.write_str_value("go_version", self.go_version)
+        writer.write_str_value("version", self.version)
         writer.write_additional_data_value(self.additional_data)
     
 

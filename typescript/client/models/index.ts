@@ -221,11 +221,56 @@ export function createServiceUpdateFromDiscriminatorValue(parseNode: ParseNode |
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
- * @returns {SystemInfo_config}
+ * @returns {SystemDoctorResult}
  */
 // @ts-ignore
-export function createSystemInfo_configFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
-    return deserializeIntoSystemInfo_config;
+export function createSystemDoctorResultFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoSystemDoctorResult;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {SystemInfo_build}
+ */
+// @ts-ignore
+export function createSystemInfo_buildFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoSystemInfo_build;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {SystemInfo_hardware}
+ */
+// @ts-ignore
+export function createSystemInfo_hardwareFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoSystemInfo_hardware;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {SystemInfo_storage_devices}
+ */
+// @ts-ignore
+export function createSystemInfo_storage_devicesFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoSystemInfo_storage_devices;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {SystemInfo_storage_partitions}
+ */
+// @ts-ignore
+export function createSystemInfo_storage_partitionsFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoSystemInfo_storage_partitions;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {SystemInfo_storage}
+ */
+// @ts-ignore
+export function createSystemInfo_storageFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoSystemInfo_storage;
 }
 /**
  * Creates a new instance of the appropriate class based on discriminator value
@@ -666,30 +711,104 @@ export function deserializeIntoServiceUpdate_env_vars(serviceUpdate_env_vars: Pa
 }
 /**
  * The deserialization information for the current model
+ * @param SystemDoctorResult The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoSystemDoctorResult(systemDoctorResult: Partial<SystemDoctorResult> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "error": n => { systemDoctorResult.errorEscaped = n.getStringValue(); },
+        "output": n => { systemDoctorResult.output = n.getStringValue(); },
+        "status": n => { systemDoctorResult.status = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
  * @param SystemInfo The instance to deserialize into.
  * @returns {Record<string, (node: ParseNode) => void>}
  */
 // @ts-ignore
 export function deserializeIntoSystemInfo(systemInfo: Partial<SystemInfo> | undefined = {}) : Record<string, (node: ParseNode) => void> {
     return {
-        "build_date": n => { systemInfo.buildDate = n.getDateValue(); },
-        "config": n => { systemInfo.config = n.getObjectValue<SystemInfo_config>(createSystemInfo_configFromDiscriminatorValue); },
-        "go_version": n => { systemInfo.goVersion = n.getStringValue(); },
-        "platform": n => { systemInfo.platform = n.getStringValue(); },
-        "version": n => { systemInfo.version = n.getStringValue(); },
+        "build": n => { systemInfo.build = n.getObjectValue<SystemInfo_build>(createSystemInfo_buildFromDiscriminatorValue); },
+        "hardware": n => { systemInfo.hardware = n.getObjectValue<SystemInfo_hardware>(createSystemInfo_hardwareFromDiscriminatorValue); },
+        "storage": n => { systemInfo.storage = n.getObjectValue<SystemInfo_storage>(createSystemInfo_storageFromDiscriminatorValue); },
     }
 }
 /**
  * The deserialization information for the current model
- * @param SystemInfo_config The instance to deserialize into.
+ * @param SystemInfo_build The instance to deserialize into.
  * @returns {Record<string, (node: ParseNode) => void>}
  */
 // @ts-ignore
-export function deserializeIntoSystemInfo_config(systemInfo_config: Partial<SystemInfo_config> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+export function deserializeIntoSystemInfo_build(systemInfo_build: Partial<SystemInfo_build> | undefined = {}) : Record<string, (node: ParseNode) => void> {
     return {
-        "data_dir": n => { systemInfo_config.dataDir = n.getStringValue(); },
-        "log_level": n => { systemInfo_config.logLevel = n.getStringValue(); },
-        "port": n => { systemInfo_config.port = n.getNumberValue(); },
+        "build_date": n => { systemInfo_build.buildDate = n.getStringValue(); },
+        "commit": n => { systemInfo_build.commit = n.getStringValue(); },
+        "go_version": n => { systemInfo_build.goVersion = n.getStringValue(); },
+        "version": n => { systemInfo_build.version = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param SystemInfo_hardware The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoSystemInfo_hardware(systemInfo_hardware: Partial<SystemInfo_hardware> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "arch": n => { systemInfo_hardware.arch = n.getStringValue(); },
+        "cpu_count": n => { systemInfo_hardware.cpuCount = n.getNumberValue(); },
+        "hostname": n => { systemInfo_hardware.hostname = n.getStringValue(); },
+        "kernel": n => { systemInfo_hardware.kernel = n.getStringValue(); },
+        "mem_free": n => { systemInfo_hardware.memFree = n.getStringValue(); },
+        "mem_total": n => { systemInfo_hardware.memTotal = n.getStringValue(); },
+        "mem_used": n => { systemInfo_hardware.memUsed = n.getStringValue(); },
+        "os": n => { systemInfo_hardware.os = n.getStringValue(); },
+        "swap_total": n => { systemInfo_hardware.swapTotal = n.getStringValue(); },
+        "swap_used": n => { systemInfo_hardware.swapUsed = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param SystemInfo_storage The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoSystemInfo_storage(systemInfo_storage: Partial<SystemInfo_storage> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "devices": n => { systemInfo_storage.devices = n.getCollectionOfObjectValues<SystemInfo_storage_devices>(createSystemInfo_storage_devicesFromDiscriminatorValue); },
+        "partitions": n => { systemInfo_storage.partitions = n.getCollectionOfObjectValues<SystemInfo_storage_partitions>(createSystemInfo_storage_partitionsFromDiscriminatorValue); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param SystemInfo_storage_devices The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoSystemInfo_storage_devices(systemInfo_storage_devices: Partial<SystemInfo_storage_devices> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "mountpoints": n => { systemInfo_storage_devices.mountpoints = n.getCollectionOfPrimitiveValues<string>(); },
+        "name": n => { systemInfo_storage_devices.name = n.getStringValue(); },
+        "size": n => { systemInfo_storage_devices.size = n.getStringValue(); },
+        "type": n => { systemInfo_storage_devices.type = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param SystemInfo_storage_partitions The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoSystemInfo_storage_partitions(systemInfo_storage_partitions: Partial<SystemInfo_storage_partitions> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "available": n => { systemInfo_storage_partitions.available = n.getStringValue(); },
+        "filesystem": n => { systemInfo_storage_partitions.filesystem = n.getStringValue(); },
+        "mountpoint": n => { systemInfo_storage_partitions.mountpoint = n.getStringValue(); },
+        "size": n => { systemInfo_storage_partitions.size = n.getStringValue(); },
+        "used": n => { systemInfo_storage_partitions.used = n.getStringValue(); },
+        "use_percent": n => { systemInfo_storage_partitions.usePercent = n.getStringValue(); },
     }
 }
 /**
@@ -1090,32 +1209,111 @@ export function serializeServiceUpdate_env_vars(writer: SerializationWriter, ser
 /**
  * Serializes information the current object
  * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param SystemDoctorResult The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeSystemDoctorResult(writer: SerializationWriter, systemDoctorResult: Partial<SystemDoctorResult> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!systemDoctorResult || isSerializingDerivedType) { return; }
+    writer.writeStringValue("error", systemDoctorResult.errorEscaped);
+    writer.writeStringValue("output", systemDoctorResult.output);
+    writer.writeStringValue("status", systemDoctorResult.status);
+    writer.writeAdditionalData(systemDoctorResult.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
  * @param SystemInfo The instance to serialize from.
  * @param writer Serialization writer to use to serialize this model
  */
 // @ts-ignore
 export function serializeSystemInfo(writer: SerializationWriter, systemInfo: Partial<SystemInfo> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
     if (!systemInfo || isSerializingDerivedType) { return; }
-    writer.writeDateValue("build_date", systemInfo.buildDate);
-    writer.writeObjectValue<SystemInfo_config>("config", systemInfo.config, serializeSystemInfo_config);
-    writer.writeStringValue("go_version", systemInfo.goVersion);
-    writer.writeStringValue("platform", systemInfo.platform);
-    writer.writeStringValue("version", systemInfo.version);
+    writer.writeObjectValue<SystemInfo_build>("build", systemInfo.build, serializeSystemInfo_build);
+    writer.writeObjectValue<SystemInfo_hardware>("hardware", systemInfo.hardware, serializeSystemInfo_hardware);
+    writer.writeObjectValue<SystemInfo_storage>("storage", systemInfo.storage, serializeSystemInfo_storage);
     writer.writeAdditionalData(systemInfo.additionalData);
 }
 /**
  * Serializes information the current object
  * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
- * @param SystemInfo_config The instance to serialize from.
+ * @param SystemInfo_build The instance to serialize from.
  * @param writer Serialization writer to use to serialize this model
  */
 // @ts-ignore
-export function serializeSystemInfo_config(writer: SerializationWriter, systemInfo_config: Partial<SystemInfo_config> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
-    if (!systemInfo_config || isSerializingDerivedType) { return; }
-    writer.writeStringValue("data_dir", systemInfo_config.dataDir);
-    writer.writeStringValue("log_level", systemInfo_config.logLevel);
-    writer.writeNumberValue("port", systemInfo_config.port);
-    writer.writeAdditionalData(systemInfo_config.additionalData);
+export function serializeSystemInfo_build(writer: SerializationWriter, systemInfo_build: Partial<SystemInfo_build> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!systemInfo_build || isSerializingDerivedType) { return; }
+    writer.writeStringValue("build_date", systemInfo_build.buildDate);
+    writer.writeStringValue("commit", systemInfo_build.commit);
+    writer.writeStringValue("go_version", systemInfo_build.goVersion);
+    writer.writeStringValue("version", systemInfo_build.version);
+    writer.writeAdditionalData(systemInfo_build.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param SystemInfo_hardware The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeSystemInfo_hardware(writer: SerializationWriter, systemInfo_hardware: Partial<SystemInfo_hardware> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!systemInfo_hardware || isSerializingDerivedType) { return; }
+    writer.writeStringValue("arch", systemInfo_hardware.arch);
+    writer.writeNumberValue("cpu_count", systemInfo_hardware.cpuCount);
+    writer.writeStringValue("hostname", systemInfo_hardware.hostname);
+    writer.writeStringValue("kernel", systemInfo_hardware.kernel);
+    writer.writeStringValue("mem_free", systemInfo_hardware.memFree);
+    writer.writeStringValue("mem_total", systemInfo_hardware.memTotal);
+    writer.writeStringValue("mem_used", systemInfo_hardware.memUsed);
+    writer.writeStringValue("os", systemInfo_hardware.os);
+    writer.writeStringValue("swap_total", systemInfo_hardware.swapTotal);
+    writer.writeStringValue("swap_used", systemInfo_hardware.swapUsed);
+    writer.writeAdditionalData(systemInfo_hardware.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param SystemInfo_storage The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeSystemInfo_storage(writer: SerializationWriter, systemInfo_storage: Partial<SystemInfo_storage> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!systemInfo_storage || isSerializingDerivedType) { return; }
+    writer.writeCollectionOfObjectValues<SystemInfo_storage_devices>("devices", systemInfo_storage.devices, serializeSystemInfo_storage_devices);
+    writer.writeCollectionOfObjectValues<SystemInfo_storage_partitions>("partitions", systemInfo_storage.partitions, serializeSystemInfo_storage_partitions);
+    writer.writeAdditionalData(systemInfo_storage.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param SystemInfo_storage_devices The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeSystemInfo_storage_devices(writer: SerializationWriter, systemInfo_storage_devices: Partial<SystemInfo_storage_devices> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!systemInfo_storage_devices || isSerializingDerivedType) { return; }
+    writer.writeCollectionOfPrimitiveValues<string>("mountpoints", systemInfo_storage_devices.mountpoints);
+    writer.writeStringValue("name", systemInfo_storage_devices.name);
+    writer.writeStringValue("size", systemInfo_storage_devices.size);
+    writer.writeStringValue("type", systemInfo_storage_devices.type);
+    writer.writeAdditionalData(systemInfo_storage_devices.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param SystemInfo_storage_partitions The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeSystemInfo_storage_partitions(writer: SerializationWriter, systemInfo_storage_partitions: Partial<SystemInfo_storage_partitions> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!systemInfo_storage_partitions || isSerializingDerivedType) { return; }
+    writer.writeStringValue("available", systemInfo_storage_partitions.available);
+    writer.writeStringValue("filesystem", systemInfo_storage_partitions.filesystem);
+    writer.writeStringValue("mountpoint", systemInfo_storage_partitions.mountpoint);
+    writer.writeStringValue("size", systemInfo_storage_partitions.size);
+    writer.writeStringValue("used", systemInfo_storage_partitions.used);
+    writer.writeStringValue("use_percent", systemInfo_storage_partitions.usePercent);
+    writer.writeAdditionalData(systemInfo_storage_partitions.additionalData);
 }
 /**
  * Serializes information the current object
@@ -1317,41 +1515,147 @@ export interface ServiceUpdate extends AdditionalDataHolder, Parsable {
 }
 export interface ServiceUpdate_env_vars extends AdditionalDataHolder, Parsable {
 }
+export interface SystemDoctorResult extends AdditionalDataHolder, Parsable {
+    /**
+     * Error message if status is "error"
+     */
+    errorEscaped?: string | null;
+    /**
+     * Combined textual output from the doctor/install scripts
+     */
+    output?: string | null;
+    /**
+     * The status property
+     */
+    status?: string | null;
+}
 export interface SystemInfo extends AdditionalDataHolder, Parsable {
     /**
-     * The build_date property
+     * The build property
      */
-    buildDate?: Date | null;
+    build?: SystemInfo_build | null;
     /**
-     * The config property
+     * The hardware property
      */
-    config?: SystemInfo_config | null;
+    hardware?: SystemInfo_hardware | null;
+    /**
+     * The storage property
+     */
+    storage?: SystemInfo_storage | null;
+}
+export interface SystemInfo_build extends AdditionalDataHolder, Parsable {
+    /**
+     * Build date - bundled at build time
+     */
+    buildDate?: string | null;
+    /**
+     * The commit property
+     */
+    commit?: string | null;
     /**
      * The go_version property
      */
     goVersion?: string | null;
     /**
-     * The platform property
-     */
-    platform?: string | null;
-    /**
      * The version property
      */
     version?: string | null;
 }
-export interface SystemInfo_config extends AdditionalDataHolder, Parsable {
+export interface SystemInfo_hardware extends AdditionalDataHolder, Parsable {
     /**
-     * The data_dir property
+     * The arch property
      */
-    dataDir?: string | null;
+    arch?: string | null;
     /**
-     * The log_level property
+     * The cpu_count property
      */
-    logLevel?: string | null;
+    cpuCount?: number | null;
     /**
-     * The port property
+     * The hostname property
      */
-    port?: number | null;
+    hostname?: string | null;
+    /**
+     * The kernel property
+     */
+    kernel?: string | null;
+    /**
+     * The mem_free property
+     */
+    memFree?: string | null;
+    /**
+     * The mem_total property
+     */
+    memTotal?: string | null;
+    /**
+     * The mem_used property
+     */
+    memUsed?: string | null;
+    /**
+     * The os property
+     */
+    os?: string | null;
+    /**
+     * The swap_total property
+     */
+    swapTotal?: string | null;
+    /**
+     * The swap_used property
+     */
+    swapUsed?: string | null;
+}
+export interface SystemInfo_storage extends AdditionalDataHolder, Parsable {
+    /**
+     * The devices property
+     */
+    devices?: SystemInfo_storage_devices[] | null;
+    /**
+     * The partitions property
+     */
+    partitions?: SystemInfo_storage_partitions[] | null;
+}
+export interface SystemInfo_storage_devices extends AdditionalDataHolder, Parsable {
+    /**
+     * The mountpoints property
+     */
+    mountpoints?: string[] | null;
+    /**
+     * The name property
+     */
+    name?: string | null;
+    /**
+     * The size property
+     */
+    size?: string | null;
+    /**
+     * The type property
+     */
+    type?: string | null;
+}
+export interface SystemInfo_storage_partitions extends AdditionalDataHolder, Parsable {
+    /**
+     * The available property
+     */
+    available?: string | null;
+    /**
+     * The filesystem property
+     */
+    filesystem?: string | null;
+    /**
+     * The mountpoint property
+     */
+    mountpoint?: string | null;
+    /**
+     * The size property
+     */
+    size?: string | null;
+    /**
+     * The used property
+     */
+    used?: string | null;
+    /**
+     * The use_percent property
+     */
+    usePercent?: string | null;
 }
 export interface SystemStatus extends AdditionalDataHolder, Parsable {
     /**
