@@ -28,8 +28,11 @@ access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."  # issued by base
 token_manager.set_access_token(access_token)
 
 # Now you can make authenticated API calls to the instance
-deployments = await client.deployments.get()
-services = await client.services.get()
+deployments_response = await client.deployments.get()
+services_response = await client.services.get()
+
+deployments = deployments_response.deployments or []
+services = services_response.services or []
 ```
 
 ## Authentication
@@ -60,27 +63,32 @@ https://docs.dployr.dev/auth.
 - `client.system` – read system health and info.
 
 Each property exposes request builders generated from the OpenAPI description. Most methods
-follow the pattern `get()`, `post(body)`, `delete()`, or `patch(body)` and return typed
-models.
+follow the pattern `get()`, `post(body)`, `delete()`, or `patch(body)`. List endpoints return
+typed DTOs such as `DeploymentsGetResponse` and `ServicesGetResponse` that contain both the
+items and a `total` count.
 
 ## Common operations
 
 List deployments:
 
 ```python
-deployments = await client.deployments.get({
+deployments_response = await client.deployments.get({
     "limit": 20,
     "offset": 0,
 })
+
+deployments = deployments_response.deployments or []
 ```
 
 List services:
 
 ```python
-services = await client.services.get({
+services_response = await client.services.get({
     "limit": 20,
     "offset": 0,
 })
+
+services = services_response.services or []
 ```
 
 Get a single service:

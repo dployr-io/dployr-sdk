@@ -28,8 +28,11 @@ const accessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // issued by base
 tokenManager.setAccessToken(accessToken);
 
 // Now you can make authenticated API calls to the instance
-const deployments = await client.deployments.get();
-const services = await client.services.get();
+const deploymentsResponse = await client.deployments.get();
+const servicesResponse = await client.services.get();
+
+const deployments = deploymentsResponse?.deployments ?? [];
+const services = servicesResponse?.services ?? [];
 ```
 
 ## Authentication
@@ -60,25 +63,30 @@ https://docs.dployr.dev/auth.
 - `client.system` – read system health and info.
 
 Each property exposes request builders generated from the OpenAPI description. Most methods
-follow the pattern `get()`, `post(body)`, `delete()`, or `patch(body)` and return typed
-responses.
+follow the pattern `get()`, `post(body)`, `delete()`, or `patch(body)`. List endpoints return
+typed DTOs such as `DeploymentsGetResponse` and `ServicesGetResponse` that contain both the
+items and a `total` count.
 
 ## Common operations
 
 List deployments:
 
 ```typescript
-const deployments = await client.deployments.get({
+const deploymentsResponse = await client.deployments.get({
   queryParameters: { limit: 20, offset: 0 },
 });
+
+const deployments = deploymentsResponse?.deployments ?? [];
 ```
 
 List services:
 
 ```typescript
-const services = await client.services.get({
+const servicesResponse = await client.services.get({
   queryParameters: { limit: 20, offset: 0 },
 });
+
+const services = servicesResponse?.services ?? [];
 ```
 
 Get a single service:
