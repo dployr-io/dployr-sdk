@@ -1,3 +1,10 @@
+#
+#
+# NOTE: This file is auto-generated. 
+# Please do not manually edit it. 
+# It will be regenerated in the next build using the following URL: https://raw.githubusercontent.com/dployr-io/dployr/refs/heads/master/api/openapi.yaml
+#
+#
 openapi: 3.0.4
 info:
   title: Dployr API
@@ -998,3 +1005,4 @@ tags:
     description: Proxy configuration and management
   - name: System
     description: System status and information
+    
