@@ -1,0 +1,16 @@
+{
+  "name": "dployr-sdk-docs",
+  "version": "1.0.0",
+  "description": "Documentation for dployr SDK",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vitepress dev docs",
+    "build": "vitepress build docs",
+    "preview": "vitepress preview docs"
+  },
+  "author": "Emmanuel Madehin",
+  "license": "MIT",
+  "devDependencies": {
+    "vitepress": "2.0.0-alpha.13"
+  }
+}

@@ -118,5 +118,5 @@ const result = await client.proxy.restart.post();
 
 ## Documentation
 
-For full API reference and guides, including all request/response types, visit
-[dployr docs](https://docs.dployr.dev).
+For full API reference and guides for the TypeScript SDK, visit
+https://sdk.dployr.dev/typescript.
