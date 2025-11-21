@@ -167,6 +167,15 @@ export function createProxyStatusFromDiscriminatorValue(parseNode: ParseNode | u
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {RegisterInstanceRequest}
+ */
+// @ts-ignore
+export function createRegisterInstanceRequestFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoRegisterInstanceRequest;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {RemoteObj}
  */
 // @ts-ignore
@@ -615,6 +624,20 @@ export function deserializeIntoProxyStatus(proxyStatus: Partial<ProxyStatus> | u
 }
 /**
  * The deserialization information for the current model
+ * @param RegisterInstanceRequest The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoRegisterInstanceRequest(registerInstanceRequest: Partial<RegisterInstanceRequest> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "audience": n => { registerInstanceRequest.audience = n.getStringValue(); },
+        "claim": n => { registerInstanceRequest.claim = n.getStringValue(); },
+        "instance_id": n => { registerInstanceRequest.instanceId = n.getStringValue(); },
+        "issuer": n => { registerInstanceRequest.issuer = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
  * @param RemoteObj The instance to deserialize into.
  * @returns {Record<string, (node: ParseNode) => void>}
  */
@@ -909,6 +932,24 @@ export interface ProxyStatus extends AdditionalDataHolder, Parsable {
      */
     status?: string | null;
 }
+export interface RegisterInstanceRequest extends AdditionalDataHolder, Parsable {
+    /**
+     * Expected token audience (for validation)
+     */
+    audience?: string | null;
+    /**
+     * Signed claim token issued by base
+     */
+    claim?: string | null;
+    /**
+     * Unique identifier assigned to this instance by base
+     */
+    instanceId?: string | null;
+    /**
+     * Expected token issuer (for validation)
+     */
+    issuer?: string | null;
+}
 export interface RemoteObj extends AdditionalDataHolder, Parsable {
     /**
      * The branch property
@@ -1103,6 +1144,21 @@ export function serializeProxyStatus(writer: SerializationWriter, proxyStatus: P
     if (!proxyStatus || isSerializingDerivedType) { return; }
     writer.writeStringValue("status", proxyStatus.status);
     writer.writeAdditionalData(proxyStatus.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param RegisterInstanceRequest The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeRegisterInstanceRequest(writer: SerializationWriter, registerInstanceRequest: Partial<RegisterInstanceRequest> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!registerInstanceRequest || isSerializingDerivedType) { return; }
+    writer.writeStringValue("audience", registerInstanceRequest.audience);
+    writer.writeStringValue("claim", registerInstanceRequest.claim);
+    writer.writeStringValue("instance_id", registerInstanceRequest.instanceId);
+    writer.writeStringValue("issuer", registerInstanceRequest.issuer);
+    writer.writeAdditionalData(registerInstanceRequest.additionalData);
 }
 /**
  * Serializes information the current object

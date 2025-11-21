@@ -9,6 +9,7 @@ if TYPE_CHECKING:
     from .doctor.doctor_request_builder import DoctorRequestBuilder
     from .info.info_request_builder import InfoRequestBuilder
     from .install.install_request_builder import InstallRequestBuilder
+    from .register.register_request_builder import RegisterRequestBuilder
     from .status.status_request_builder import StatusRequestBuilder
 
 class SystemRequestBuilder(BaseRequestBuilder):
@@ -50,6 +51,15 @@ class SystemRequestBuilder(BaseRequestBuilder):
         from .install.install_request_builder import InstallRequestBuilder
 
         return InstallRequestBuilder(self.request_adapter, self.path_parameters)
+    
+    @property
+    def register(self) -> RegisterRequestBuilder:
+        """
+        The register property
+        """
+        from .register.register_request_builder import RegisterRequestBuilder
+
+        return RegisterRequestBuilder(self.request_adapter, self.path_parameters)
     
     @property
     def status(self) -> StatusRequestBuilder:

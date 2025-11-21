@@ -8,6 +8,8 @@ import { InfoRequestBuilderRequestsMetadata, type InfoRequestBuilder } from './i
 // @ts-ignore
 import { InstallRequestBuilderRequestsMetadata, type InstallRequestBuilder } from './install/index.js';
 // @ts-ignore
+import { RegisterRequestBuilderRequestsMetadata, type RegisterRequestBuilder } from './register/index.js';
+// @ts-ignore
 import { StatusRequestBuilderRequestsMetadata, type StatusRequestBuilder } from './status/index.js';
 // @ts-ignore
 import { type BaseRequestBuilder, type KeysToExcludeForNavigationMetadata, type NavigationMetadata } from '@microsoft/kiota-abstractions';
@@ -29,6 +31,10 @@ export interface SystemRequestBuilder extends BaseRequestBuilder<SystemRequestBu
      */
     get install(): InstallRequestBuilder;
     /**
+     * The register property
+     */
+    get register(): RegisterRequestBuilder;
+    /**
      * The status property
      */
     get status(): StatusRequestBuilder;
@@ -49,6 +55,9 @@ export const SystemRequestBuilderNavigationMetadata: Record<Exclude<keyof System
     },
     install: {
         requestsMetadata: InstallRequestBuilderRequestsMetadata,
+    },
+    register: {
+        requestsMetadata: RegisterRequestBuilderRequestsMetadata,
     },
     status: {
         requestsMetadata: StatusRequestBuilderRequestsMetadata,
