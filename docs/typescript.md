@@ -311,3 +311,23 @@ const installResult = await client.system.install.post({
   body: installBody,
 });
 ```
+
+### Register instance with base
+
+**OpenAPI**: `POST /system/register`
+
+This endpoint is typically called by base during installation or onboarding. It does **not** require authentication but validates the provided claim token against the token stored locally on the instance.
+
+```ts
+const registerBody = {
+  claim: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...",
+  instance_id: "inst_01HXYZABCDEF123456",
+  // Optional overrides for token validation:
+  // issuer: "https://base.dployr.dev",
+  // audience: "dployr-instance",
+};
+
+const registerResult = await client.system.register.post({
+  body: registerBody,
+});
+```

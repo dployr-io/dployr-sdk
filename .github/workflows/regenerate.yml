@@ -30,13 +30,9 @@ jobs:
       - name: Download latest API spec
         run: |
           cat << 'EOF' > openapi.yaml
-          #
-          #
           # NOTE: This file is auto-generated. 
           # Please do not manually edit it. 
           # It will be regenerated in the next build using the following URL: ${{ github.event.client_payload.spec_url }}
-          #
-          #
           EOF
 
           curl -fsSL "${{ github.event.client_payload.spec_url }}" >> openapi.yaml

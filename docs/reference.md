@@ -328,6 +328,17 @@ individual SSE events.
 }
 ```
 
+### RegisterInstanceRequest (POST /system/register)
+
+```jsonc
+{
+  "claim": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...", // required: signed claim token issued by base
+  "instance_id": "inst_01HXYZABCDEF123456",          // required: unique identifier for this instance
+  "issuer": "https://base.dployr.dev",                // optional: expected token issuer
+  "audience": "dployr-instance"                       // optional: expected token audience
+}
+```
+
 ---
 
 ## Error shapes
