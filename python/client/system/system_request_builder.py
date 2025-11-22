@@ -7,6 +7,7 @@ from typing import Any, Optional, TYPE_CHECKING, Union
 
 if TYPE_CHECKING:
     from .doctor.doctor_request_builder import DoctorRequestBuilder
+    from .domain.domain_request_builder import DomainRequestBuilder
     from .info.info_request_builder import InfoRequestBuilder
     from .install.install_request_builder import InstallRequestBuilder
     from .register.register_request_builder import RegisterRequestBuilder
@@ -33,6 +34,15 @@ class SystemRequestBuilder(BaseRequestBuilder):
         from .doctor.doctor_request_builder import DoctorRequestBuilder
 
         return DoctorRequestBuilder(self.request_adapter, self.path_parameters)
+    
+    @property
+    def domain(self) -> DomainRequestBuilder:
+        """
+        The domain property
+        """
+        from .domain.domain_request_builder import DomainRequestBuilder
+
+        return DomainRequestBuilder(self.request_adapter, self.path_parameters)
     
     @property
     def info(self) -> InfoRequestBuilder:
