@@ -628,6 +628,14 @@ paths:
       responses:
         '200':
           description: Domain successfully requested and instance registered
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  domain:
+                    type: string
+                    example: "my-awesome-app.dployr.dev"
         '500':
           $ref: '#/components/responses/InternalServerError'
 
@@ -1113,15 +1121,10 @@ components:
       type: object
       required:
         - token
-        - address
       properties:
         token:
           type: string
           description: Installation token issued by base for this instance
-        address:
-          type: string
-          description: IP address or host address of the instance reachable by base
-
     Error:
       type: object
       properties:
