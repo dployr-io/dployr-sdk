@@ -11,5 +11,5 @@ Provides authentication, deployment management, service control, and more.
 
 from .client_factory import create_dployr_client, TokenManager
 
-__version__ = "1.5.0"
+__version__ = "2.0.0"
 __all__ = ["create_dployr_client", "TokenManager"]
