@@ -302,6 +302,22 @@ install_body = {
 install_result = await client.system.install.post(install_body)
 ```
 
+### Request managed domain from base
+
+**OpenAPI**: `POST /system/domain`
+
+This endpoint is typically called during installation with a token issued by base for this instance. It does **not** require authentication.
+
+```python
+domain_body = {
+    "token": "TOKEN_FROM_BASE",
+}
+
+domain_result = await client.system.domain.post(domain_body)
+
+assigned_domain = domain_result.get("domain")
+```
+
 ### Register instance with base
 
 **OpenAPI**: `POST /system/register`

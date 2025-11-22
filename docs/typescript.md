@@ -312,6 +312,24 @@ const installResult = await client.system.install.post({
 });
 ```
 
+### Request managed domain from base
+
+**OpenAPI**: `POST /system/domain`
+
+This endpoint is typically called during installation with a token issued by base for this instance. It does **not** require authentication.
+
+```ts
+const domainBody = {
+  token: "TOKEN_FROM_BASE",
+};
+
+const domainResult = await client.system.domain.post({
+  body: domainBody,
+});
+
+const assignedDomain = domainResult?.domain;
+```
+
 ### Register instance with base
 
 **OpenAPI**: `POST /system/register`
