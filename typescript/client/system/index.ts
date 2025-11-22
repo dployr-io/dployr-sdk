@@ -4,6 +4,8 @@
 // @ts-ignore
 import { DoctorRequestBuilderRequestsMetadata, type DoctorRequestBuilder } from './doctor/index.js';
 // @ts-ignore
+import { DomainRequestBuilderRequestsMetadata, type DomainRequestBuilder } from './domain/index.js';
+// @ts-ignore
 import { InfoRequestBuilderRequestsMetadata, type InfoRequestBuilder } from './info/index.js';
 // @ts-ignore
 import { InstallRequestBuilderRequestsMetadata, type InstallRequestBuilder } from './install/index.js';
@@ -22,6 +24,10 @@ export interface SystemRequestBuilder extends BaseRequestBuilder<SystemRequestBu
      * The doctor property
      */
     get doctor(): DoctorRequestBuilder;
+    /**
+     * The domain property
+     */
+    get domain(): DomainRequestBuilder;
     /**
      * The info property
      */
@@ -49,6 +55,9 @@ export const SystemRequestBuilderUriTemplate = "{+baseurl}/system";
 export const SystemRequestBuilderNavigationMetadata: Record<Exclude<keyof SystemRequestBuilder, KeysToExcludeForNavigationMetadata>, NavigationMetadata> = {
     doctor: {
         requestsMetadata: DoctorRequestBuilderRequestsMetadata,
+    },
+    domain: {
+        requestsMetadata: DomainRequestBuilderRequestsMetadata,
     },
     info: {
         requestsMetadata: InfoRequestBuilderRequestsMetadata,
