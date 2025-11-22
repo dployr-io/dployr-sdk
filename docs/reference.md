@@ -328,6 +328,14 @@ individual SSE events.
 }
 ```
 
+### InstallRequest (POST /system/install)
+
+```jsonc
+{
+  "version": "v0.1.1-beta.17" // optional: dployr version tag to install; if omitted, installs latest
+}
+```
+
 ### RegisterInstanceRequest (POST /system/register)
 
 ```jsonc
@@ -336,6 +344,22 @@ individual SSE events.
   "instance_id": "inst_01HXYZABCDEF123456",          // required: unique identifier for this instance
   "issuer": "https://base.dployr.dev",                // optional: expected token issuer
   "audience": "dployr-instance"                       // optional: expected token audience
+}
+```
+
+### RequestDomainRequest (POST /system/domain)
+
+```jsonc
+{
+  "token": "..." // required: installation token issued by base for this instance
+}
+```
+
+### RequestDomainResponse (POST /system/domain)
+
+```jsonc
+{
+  "domain": "my-instance.dployr.dev" // assigned domain for this instance
 }
 ```
 
