@@ -9,8 +9,6 @@ class RequestDomainRequest(AdditionalDataHolder, Parsable):
     # Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additional_data: dict[str, Any] = field(default_factory=dict)
 
-    # IP address or host address of the instance reachable by base
-    address: Optional[str] = None
     # Installation token issued by base for this instance
     token: Optional[str] = None
     
@@ -31,7 +29,6 @@ class RequestDomainRequest(AdditionalDataHolder, Parsable):
         Returns: dict[str, Callable[[ParseNode], None]]
         """
         fields: dict[str, Callable[[Any], None]] = {
-            "address": lambda n : setattr(self, 'address', n.get_str_value()),
             "token": lambda n : setattr(self, 'token', n.get_str_value()),
         }
         return fields
@@ -44,7 +41,6 @@ class RequestDomainRequest(AdditionalDataHolder, Parsable):
         """
         if writer is None:
             raise TypeError("writer cannot be null.")
-        writer.write_str_value("address", self.address)
         writer.write_str_value("token", self.token)
         writer.write_additional_data_value(self.additional_data)
     
