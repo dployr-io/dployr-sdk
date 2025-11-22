@@ -1113,15 +1113,10 @@ components:
       type: object
       required:
         - token
-        - address
       properties:
         token:
           type: string
           description: Installation token issued by base for this instance
-        address:
-          type: string
-          description: IP address or host address of the instance reachable by base
-
     Error:
       type: object
       properties:

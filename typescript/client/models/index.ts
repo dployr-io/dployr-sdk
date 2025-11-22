@@ -666,7 +666,6 @@ export function deserializeIntoRemoteObj(remoteObj: Partial<RemoteObj> | undefin
 // @ts-ignore
 export function deserializeIntoRequestDomainRequest(requestDomainRequest: Partial<RequestDomainRequest> | undefined = {}) : Record<string, (node: ParseNode) => void> {
     return {
-        "address": n => { requestDomainRequest.address = n.getStringValue(); },
         "token": n => { requestDomainRequest.token = n.getStringValue(); },
     }
 }
@@ -987,10 +986,6 @@ export interface RemoteObj extends AdditionalDataHolder, Parsable {
 }
 export interface RequestDomainRequest extends AdditionalDataHolder, Parsable {
     /**
-     * IP address or host address of the instance reachable by base
-     */
-    address?: string | null;
-    /**
      * Installation token issued by base for this instance
      */
     token?: string | null;
@@ -1214,7 +1209,6 @@ export function serializeRemoteObj(writer: SerializationWriter, remoteObj: Parti
 // @ts-ignore
 export function serializeRequestDomainRequest(writer: SerializationWriter, requestDomainRequest: Partial<RequestDomainRequest> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
     if (!requestDomainRequest || isSerializingDerivedType) { return; }
-    writer.writeStringValue("address", requestDomainRequest.address);
     writer.writeStringValue("token", requestDomainRequest.token);
     writer.writeAdditionalData(requestDomainRequest.additionalData);
 }
