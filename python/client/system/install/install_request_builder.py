@@ -15,8 +15,8 @@ from warnings import warn
 
 if TYPE_CHECKING:
     from ...models.error import Error
+    from ...models.install_request import InstallRequest
     from ...models.system_doctor_result import SystemDoctorResult
-    from .install_post_request_body import InstallPostRequestBody
 
 class InstallRequestBuilder(BaseRequestBuilder):
     """
@@ -31,7 +31,7 @@ class InstallRequestBuilder(BaseRequestBuilder):
         """
         super().__init__(request_adapter, "{+baseurl}/system/install", path_parameters)
     
-    async def post(self,body: InstallPostRequestBody, request_configuration: Optional[RequestConfiguration[QueryParameters]] = None) -> Optional[SystemDoctorResult]:
+    async def post(self,body: InstallRequest, request_configuration: Optional[RequestConfiguration[QueryParameters]] = None) -> Optional[SystemDoctorResult]:
         """
         Install a specific version of dployr or the latest version, then run the system doctor.
         param body: The request body
@@ -54,7 +54,7 @@ class InstallRequestBuilder(BaseRequestBuilder):
 
         return await self.request_adapter.send_async(request_info, SystemDoctorResult, error_mapping)
     
-    def to_post_request_information(self,body: InstallPostRequestBody, request_configuration: Optional[RequestConfiguration[QueryParameters]] = None) -> RequestInformation:
+    def to_post_request_information(self,body: InstallRequest, request_configuration: Optional[RequestConfiguration[QueryParameters]] = None) -> RequestInformation:
         """
         Install a specific version of dployr or the latest version, then run the system doctor.
         param body: The request body

@@ -16,6 +16,7 @@ from warnings import warn
 if TYPE_CHECKING:
     from ...models.error import Error
     from ...models.request_domain_request import RequestDomainRequest
+    from ...models.request_domain_response import RequestDomainResponse
 
 class DomainRequestBuilder(BaseRequestBuilder):
     """
@@ -30,12 +31,12 @@ class DomainRequestBuilder(BaseRequestBuilder):
         """
         super().__init__(request_adapter, "{+baseurl}/system/domain", path_parameters)
     
-    async def post(self,body: RequestDomainRequest, request_configuration: Optional[RequestConfiguration[QueryParameters]] = None) -> Optional[bytes]:
+    async def post(self,body: RequestDomainRequest, request_configuration: Optional[RequestConfiguration[QueryParameters]] = None) -> Optional[RequestDomainResponse]:
         """
         Request and assign a managed domain for this dployr instance from the base control plane.This endpoint is typically called during installation with a token issued by base andthe instance's address. It does **not** require authentication.
         param body: The request body
         param request_configuration: Configuration for the request such as headers, query parameters, and middleware options.
-        Returns: bytes
+        Returns: Optional[RequestDomainResponse]
         """
         if body is None:
             raise TypeError("body cannot be null.")
@@ -49,7 +50,9 @@ class DomainRequestBuilder(BaseRequestBuilder):
         }
         if not self.request_adapter:
             raise Exception("Http core is null") 
-        return await self.request_adapter.send_primitive_async(request_info, "bytes", error_mapping)
+        from ...models.request_domain_response import RequestDomainResponse
+
+        return await self.request_adapter.send_async(request_info, RequestDomainResponse, error_mapping)
     
     def to_post_request_information(self,body: RequestDomainRequest, request_configuration: Optional[RequestConfiguration[QueryParameters]] = None) -> RequestInformation:
         """
