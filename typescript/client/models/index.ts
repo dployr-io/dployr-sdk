@@ -149,6 +149,15 @@ export function createErrorEscapedFromDiscriminatorValue(parseNode: ParseNode | 
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {InstallRequest}
+ */
+// @ts-ignore
+export function createInstallRequestFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoInstallRequest;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {ProxyRoute}
  */
 // @ts-ignore
@@ -190,6 +199,15 @@ export function createRemoteObjFromDiscriminatorValue(parseNode: ParseNode | und
 // @ts-ignore
 export function createRequestDomainRequestFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
     return deserializeIntoRequestDomainRequest;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {RequestDomainResponse}
+ */
+// @ts-ignore
+export function createRequestDomainResponseFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoRequestDomainResponse;
 }
 /**
  * Creates a new instance of the appropriate class based on discriminator value
@@ -610,6 +628,17 @@ export function deserializeIntoErrorEscaped(errorEscaped: Partial<ErrorEscaped> 
 }
 /**
  * The deserialization information for the current model
+ * @param InstallRequest The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoInstallRequest(installRequest: Partial<InstallRequest> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "version": n => { installRequest.version = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
  * @param ProxyRoute The instance to deserialize into.
  * @returns {Record<string, (node: ParseNode) => void>}
  */
@@ -666,8 +695,18 @@ export function deserializeIntoRemoteObj(remoteObj: Partial<RemoteObj> | undefin
 // @ts-ignore
 export function deserializeIntoRequestDomainRequest(requestDomainRequest: Partial<RequestDomainRequest> | undefined = {}) : Record<string, (node: ParseNode) => void> {
     return {
-        "address": n => { requestDomainRequest.address = n.getStringValue(); },
         "token": n => { requestDomainRequest.token = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param RequestDomainResponse The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoRequestDomainResponse(requestDomainResponse: Partial<RequestDomainResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "domain": n => { requestDomainResponse.domain = n.getStringValue(); },
     }
 }
 /**
@@ -937,6 +976,12 @@ export interface ErrorEscaped extends AdditionalDataHolder, ApiError, Parsable {
      */
     errorEscaped?: string | null;
 }
+export interface InstallRequest extends AdditionalDataHolder, Parsable {
+    /**
+     * dployr version tag to install (e.g. v0.1.1-beta.17). If omitted, installs latest.
+     */
+    version?: string | null;
+}
 export interface ProxyRoute extends AdditionalDataHolder, Parsable {
     /**
      * The domain property
@@ -987,13 +1032,15 @@ export interface RemoteObj extends AdditionalDataHolder, Parsable {
 }
 export interface RequestDomainRequest extends AdditionalDataHolder, Parsable {
     /**
-     * IP address or host address of the instance reachable by base
-     */
-    address?: string | null;
-    /**
      * Installation token issued by base for this instance
      */
     token?: string | null;
+}
+export interface RequestDomainResponse extends AdditionalDataHolder, Parsable {
+    /**
+     * Assigned domain for this instance
+     */
+    domain?: string | null;
 }
 export type Runtime = (typeof RuntimeObject)[keyof typeof RuntimeObject];
 export interface RuntimeObj extends AdditionalDataHolder, Parsable {
@@ -1153,6 +1200,18 @@ export function serializeErrorEscaped(writer: SerializationWriter, errorEscaped:
 }
 /**
  * Serializes information the current object
+ * @param InstallRequest The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeInstallRequest(writer: SerializationWriter, installRequest: Partial<InstallRequest> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!installRequest || isSerializingDerivedType) { return; }
+    writer.writeStringValue("version", installRequest.version);
+    writer.writeAdditionalData(installRequest.additionalData);
+}
+/**
+ * Serializes information the current object
  * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
  * @param ProxyRoute The instance to serialize from.
  * @param writer Serialization writer to use to serialize this model
@@ -1214,9 +1273,20 @@ export function serializeRemoteObj(writer: SerializationWriter, remoteObj: Parti
 // @ts-ignore
 export function serializeRequestDomainRequest(writer: SerializationWriter, requestDomainRequest: Partial<RequestDomainRequest> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
     if (!requestDomainRequest || isSerializingDerivedType) { return; }
-    writer.writeStringValue("address", requestDomainRequest.address);
     writer.writeStringValue("token", requestDomainRequest.token);
     writer.writeAdditionalData(requestDomainRequest.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param RequestDomainResponse The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeRequestDomainResponse(writer: SerializationWriter, requestDomainResponse: Partial<RequestDomainResponse> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!requestDomainResponse || isSerializingDerivedType) { return; }
+    writer.writeStringValue("domain", requestDomainResponse.domain);
+    writer.writeAdditionalData(requestDomainResponse.additionalData);
 }
 /**
  * Serializes information the current object
