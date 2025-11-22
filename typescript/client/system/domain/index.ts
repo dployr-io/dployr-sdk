@@ -4,8 +4,34 @@
 // @ts-ignore
 import { createErrorEscapedFromDiscriminatorValue, serializeRequestDomainRequest, type ErrorEscaped, type RequestDomainRequest } from '../../models/index.js';
 // @ts-ignore
-import { type BaseRequestBuilder, type Parsable, type ParsableFactory, type RequestConfiguration, type RequestInformation, type RequestsMetadata } from '@microsoft/kiota-abstractions';
+import { type AdditionalDataHolder, type BaseRequestBuilder, type Parsable, type ParsableFactory, type ParseNode, type RequestConfiguration, type RequestInformation, type RequestsMetadata, type SerializationWriter } from '@microsoft/kiota-abstractions';
 
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {DomainPostResponse}
+ */
+// @ts-ignore
+export function createDomainPostResponseFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoDomainPostResponse;
+}
+/**
+ * The deserialization information for the current model
+ * @param DomainPostResponse The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoDomainPostResponse(domainPostResponse: Partial<DomainPostResponse> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "domain": n => { domainPostResponse.domain = n.getStringValue(); },
+    }
+}
+export interface DomainPostResponse extends AdditionalDataHolder, Parsable {
+    /**
+     * The domain property
+     */
+    domain?: string | null;
+}
 /**
  * Builds and executes requests for operations under /system/domain
  */
@@ -14,10 +40,10 @@ export interface DomainRequestBuilder extends BaseRequestBuilder<DomainRequestBu
      * Request and assign a managed domain for this dployr instance from the base control plane.This endpoint is typically called during installation with a token issued by base andthe instance's address. It does **not** require authentication.
      * @param body The request body
      * @param requestConfiguration Configuration for the request such as headers, query parameters, and middleware options.
-     * @returns {Promise<ArrayBuffer>}
+     * @returns {Promise<DomainPostResponse>}
      * @throws {ErrorEscaped} error when the service returns a 500 status code
      */
-     post(body: RequestDomainRequest, requestConfiguration?: RequestConfiguration<object> | undefined) : Promise<ArrayBuffer | undefined>;
+     post(body: RequestDomainRequest, requestConfiguration?: RequestConfiguration<object> | undefined) : Promise<DomainPostResponse | undefined>;
     /**
      * Request and assign a managed domain for this dployr instance from the base control plane.This endpoint is typically called during installation with a token issued by base andthe instance's address. It does **not** require authentication.
      * @param body The request body
@@ -25,6 +51,18 @@ export interface DomainRequestBuilder extends BaseRequestBuilder<DomainRequestBu
      * @returns {RequestInformation}
      */
      toPostRequestInformation(body: RequestDomainRequest, requestConfiguration?: RequestConfiguration<object> | undefined) : RequestInformation;
+}
+/**
+ * Serializes information the current object
+ * @param DomainPostResponse The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeDomainPostResponse(writer: SerializationWriter, domainPostResponse: Partial<DomainPostResponse> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!domainPostResponse || isSerializingDerivedType) { return; }
+    writer.writeStringValue("domain", domainPostResponse.domain);
+    writer.writeAdditionalData(domainPostResponse.additionalData);
 }
 /**
  * Uri template for the request builder.
@@ -40,8 +78,8 @@ export const DomainRequestBuilderRequestsMetadata: RequestsMetadata = {
         errorMappings: {
             500: createErrorEscapedFromDiscriminatorValue as ParsableFactory<Parsable>,
         },
-        adapterMethodName: "sendPrimitive",
-        responseBodyFactory:  "ArrayBuffer",
+        adapterMethodName: "send",
+        responseBodyFactory:  createDomainPostResponseFromDiscriminatorValue,
         requestBodyContentType: "application/json",
         requestBodySerializer: serializeRequestDomainRequest,
         requestInformationContentSetMethod: "setContentFromParsable",
